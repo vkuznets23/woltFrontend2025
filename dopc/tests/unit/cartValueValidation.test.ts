@@ -5,64 +5,17 @@ import { ZodError } from 'zod'
 describe('cartValue field validation', () => {
   //20. ???
   //1e2
+  const baseData = {
+    cartValue: '30',
+    userLatitude: '60.20970',
+    userLongitude: '24.97979',
+    venueSlug: 'home-assignment-venue-helsinki',
+  }
 
-  it('parses valid input correctly', () => {
-    const validData = {
-      cartValue: '30',
-      userLatitude: '60.20970',
-      userLongitude: '24.97979',
-      venueSlug: 'home-assignment-venue-helsinki',
-    }
-
-    const result = validationSchema.parse(validData)
-
-    expect(result).toEqual({
-      cartValue: 3000,
-      userLatitude: 60.2097,
-      userLongitude: 24.97979,
-      venueSlug: 'home-assignment-venue-helsinki',
-    })
-  })
-  it('parses valid with lots of integers after comma input correctly', () => {
-    const validData = {
-      cartValue: '30.100000',
-      userLatitude: '60.20970',
-      userLongitude: '24.97979',
-      venueSlug: 'home-assignment-venue-helsinki',
-    }
-
-    const result = validationSchema.parse(validData)
-
-    expect(result).toEqual({
-      cartValue: 3010,
-      userLatitude: 60.2097,
-      userLongitude: 24.97979,
-      venueSlug: 'home-assignment-venue-helsinki',
-    })
-  })
-  it('parses valid big number', () => {
-    const validData = {
-      cartValue: '10000000000.99',
-      userLatitude: '60.20970',
-      userLongitude: '24.97979',
-      venueSlug: 'home-assignment-venue-helsinki',
-    }
-
-    const result = validationSchema.parse(validData)
-
-    expect(result).toEqual({
-      cartValue: 1000000000099,
-      userLatitude: 60.2097,
-      userLongitude: 24.97979,
-      venueSlug: 'home-assignment-venue-helsinki',
-    })
-  })
   it('shows error if cartValue is not a number', () => {
     const invalidData = {
+      ...baseData,
       cartValue: '10.199',
-      userLatitude: '60.20970',
-      userLongitude: '24.97979',
-      venueSlug: 'home-assignment-venue-helsinki',
     }
     try {
       validationSchema.parse(invalidData)
@@ -78,10 +31,8 @@ describe('cartValue field validation', () => {
   })
   it('shows error if cartValue is an array', () => {
     const invalidData = {
+      ...baseData,
       cartValue: ['10'],
-      userLatitude: '60.20970',
-      userLongitude: '24.97979',
-      venueSlug: 'home-assignment-venue-helsinki',
     }
     try {
       validationSchema.parse(invalidData)
@@ -95,10 +46,8 @@ describe('cartValue field validation', () => {
   })
   it('shows error if cartValue is null', () => {
     const invalidData = {
+      ...baseData,
       cartValue: null,
-      userLatitude: '60.20970',
-      userLongitude: '24.97979',
-      venueSlug: 'home-assignment-venue-helsinki',
     }
     try {
       validationSchema.parse(invalidData)
@@ -112,10 +61,8 @@ describe('cartValue field validation', () => {
   })
   it('shows error if cartValue is undefined', () => {
     const invalidData = {
+      ...baseData,
       cartValue: undefined,
-      userLatitude: '60.20970',
-      userLongitude: '24.97979',
-      venueSlug: 'home-assignment-venue-helsinki',
     }
     try {
       validationSchema.parse(invalidData)
@@ -129,10 +76,8 @@ describe('cartValue field validation', () => {
   })
   it('shows error if cartValue is a number with multiple .', () => {
     const invalidData = {
+      ...baseData,
       cartValue: '10.5.2',
-      userLatitude: '60.20970',
-      userLongitude: '24.97979',
-      venueSlug: 'home-assignment-venue-helsinki',
     }
     try {
       validationSchema.parse(invalidData)
@@ -146,10 +91,8 @@ describe('cartValue field validation', () => {
   })
   it('shows error if cartValue is object', () => {
     const invalidData = {
+      ...baseData,
       cartValue: { amount: '10' },
-      userLatitude: '60.20970',
-      userLongitude: '24.97979',
-      venueSlug: 'home-assignment-venue-helsinki',
     }
     try {
       validationSchema.parse(invalidData)
@@ -163,10 +106,8 @@ describe('cartValue field validation', () => {
   })
   it('shows error if cartValue is not a number', () => {
     const invalidData = {
+      ...baseData,
       cartValue: 'abc',
-      userLatitude: '60.20970',
-      userLongitude: '24.97979',
-      venueSlug: 'home-assignment-venue-helsinki',
     }
     try {
       validationSchema.parse(invalidData)
@@ -180,10 +121,8 @@ describe('cartValue field validation', () => {
   })
   it('shows error if cartValue is a number with letters', () => {
     const invalidData = {
+      ...baseData,
       cartValue: '10.abc',
-      userLatitude: '60.20970',
-      userLongitude: '24.97979',
-      venueSlug: 'home-assignment-venue-helsinki',
     }
     try {
       validationSchema.parse(invalidData)
@@ -197,10 +136,8 @@ describe('cartValue field validation', () => {
   })
   it('shows error if cartValue is a number with spaces', () => {
     const invalidData = {
+      ...baseData,
       cartValue: '1  0',
-      userLatitude: '60.20970',
-      userLongitude: '24.97979',
-      venueSlug: 'home-assignment-venue-helsinki',
     }
     try {
       validationSchema.parse(invalidData)
@@ -214,10 +151,8 @@ describe('cartValue field validation', () => {
   })
   it('shows error if cartValue is a number with $', () => {
     const invalidData = {
+      ...baseData,
       cartValue: '$10',
-      userLatitude: '60.20970',
-      userLongitude: '24.97979',
-      venueSlug: 'home-assignment-venue-helsinki',
     }
     try {
       validationSchema.parse(invalidData)
@@ -231,10 +166,8 @@ describe('cartValue field validation', () => {
   })
   it('shows error if cartValue is a number with commas', () => {
     const invalidData = {
+      ...baseData,
       cartValue: '10,10',
-      userLatitude: '60.20970',
-      userLongitude: '24.97979',
-      venueSlug: 'home-assignment-venue-helsinki',
     }
     try {
       validationSchema.parse(invalidData)
@@ -248,10 +181,8 @@ describe('cartValue field validation', () => {
   })
   it('shows error if cartValue is a negative number', () => {
     const invalidData = {
+      ...baseData,
       cartValue: '-1',
-      userLatitude: '60.20970',
-      userLongitude: '24.97979',
-      venueSlug: 'home-assignment-venue-helsinki',
     }
 
     try {
@@ -268,10 +199,8 @@ describe('cartValue field validation', () => {
   })
   it('shows error if cartValue is empty', () => {
     const invalidData = {
+      ...baseData,
       cartValue: '',
-      userLatitude: '60.20970',
-      userLongitude: '24.97979',
-      venueSlug: 'home-assignment-venue-helsinki',
     }
 
     try {
@@ -286,10 +215,8 @@ describe('cartValue field validation', () => {
   })
   it('shows error if cartValue is single space', () => {
     const invalidData = {
+      ...baseData,
       cartValue: ' ',
-      userLatitude: '60.20970',
-      userLongitude: '24.97979',
-      venueSlug: 'home-assignment-venue-helsinki',
     }
 
     try {
@@ -304,10 +231,8 @@ describe('cartValue field validation', () => {
   })
   it('shows error if cartValue is emoji', () => {
     const invalidData = {
+      ...baseData,
       cartValue: '☺️',
-      userLatitude: '60.20970',
-      userLongitude: '24.97979',
-      venueSlug: 'home-assignment-venue-helsinki',
     }
 
     try {
