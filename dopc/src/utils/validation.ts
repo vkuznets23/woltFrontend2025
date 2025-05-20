@@ -9,7 +9,7 @@ export const cartValueSchema = z.preprocess((val) => {
     return Number(trimmed) * 100
   }
   return val
-}, z.number({ invalid_type_error: 'Cart value must be a number', required_error: 'Cart value is required' }).int({ message: 'Cart value must be an integer' }).min(1, { message: 'Cart value must be greater than 0' }))
+}, z.number({ invalid_type_error: 'Cart value must be a number', required_error: 'Cart value is required' }).int({ message: 'Cart value must be a valid number' }).min(1, { message: 'Cart value must be greater than 0' }))
 
 const coordinateSchema = (type: 'latitude' | 'longitude') =>
   z
