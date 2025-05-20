@@ -19,7 +19,7 @@ describe('valid inputs', () => {
       venueSlug: 'home-assignment-venue-helsinki',
     })
   })
-  it('parses valid with lots of integers after comma input correctly', () => {
+  it('parses valid cartValue with lots of digits after comma input correctly', () => {
     const validData = {
       ...baseData,
       cartValue: '30.100000',
@@ -34,7 +34,7 @@ describe('valid inputs', () => {
       venueSlug: 'home-assignment-venue-helsinki',
     })
   })
-  it('parses valid big number', () => {
+  it('parses big cartValue number correctly', () => {
     const validData = {
       ...baseData,
       cartValue: '10000000000.99',

@@ -2,6 +2,8 @@ import { describe, it, expect } from 'vitest'
 import { validationSchema } from '../../src/utils/validation'
 import { ZodError } from 'zod'
 
+//for longitutde i should have all the same but differante range
+
 describe('latitude field validation', () => {
   // latitude: '6e1'
 
@@ -300,5 +302,3 @@ describe('latitude field validation', () => {
     }
   })
 })
-
-// not in the latitude range 91.1234 -91.1234

@@ -1,16 +1,16 @@
 import { test, expect } from '@playwright/test'
-
-const baseUrl =
-  'https://consumer-api.development.dev.woltapi.com/home-assignment-api/v1/venues/home-assignment-venue-helsinki'
+import { fillForm, waitForVenueData } from './utils'
 
 test('calculator works correctly', async ({ page }) => {
-  await page.goto('')
-  await page.waitForResponse(`${baseUrl}/static`)
-  await page.waitForResponse(`${baseUrl}/dynamic`)
+  const data = {
+    page,
+    cartValue: '10.00',
+    latitude: '60.18130',
+    longitude: '24.95781',
+  }
 
-  await page.getByTestId('cartValue').fill('10.00')
-  await page.getByTestId('userLatitude').fill('60.18130')
-  await page.getByTestId('userLongitude').fill('24.95781')
+  await waitForVenueData(page)
+  await fillForm(data)
 
   await page.getByTestId('submitButton').click()
 
@@ -54,14 +54,35 @@ test('get geolocation button', async ({ page }) => {
   await expect(page.getByTestId('userLongitude')).toHaveValue('24.54321')
 })
 
-test('show validation error on empty submit', async ({ page }) => {
-  await page.goto('')
-  await page.waitForResponse(`${baseUrl}/static`)
-  await page.waitForResponse(`${baseUrl}/dynamic`)
+test('invalid cartValue input doesnt print price breakdown', async ({
+  page,
+}) => {
+  const data = {
+    page,
+    cartValue: '-1',
+    latitude: '60.18130',
+    longitude: '24.95781',
+  }
+
+  await waitForVenueData(page)
+  await fillForm(data)
 
   await page.getByTestId('submitButton').click()
 
-  await expect(page.locator('text=Cart value is required')).toBeVisible()
-  await expect(page.locator('text=Latitude is required')).toBeVisible()
-  await expect(page.locator('text=Longitude is required')).toBeVisible()
+  await expect(
+    page.getByText('Cart value must be greater than 0')
+  ).toBeVisible()
+
+  await expect(page.getByTestId('cartValueLabel')).toBeVisible()
+  await expect(page.getByTestId('formattedCartValue')).toHaveText('0.00 €')
+  await expect(page.getByTestId('deliveryFeeValueLabel')).toBeVisible()
+  await expect(page.getByTestId('deliveryFeeValue')).toHaveText('0.00 €')
+  await expect(page.getByTestId('deliveryDistanceValueLabel')).toBeVisible()
+  await expect(page.getByTestId('deliveryDistanceValue')).toHaveText('0 m')
+  await expect(page.getByTestId('smallOrderSurchargeValueLabel')).toBeVisible()
+  await expect(page.getByTestId('smallOrderSurchargeValue')).toHaveText(
+    '0.00 €'
+  )
+  await expect(page.getByTestId('totalPriceValueLabel')).toBeVisible()
+  await expect(page.getByTestId('totalPriceValue')).toHaveText('0.00 €')
 })
