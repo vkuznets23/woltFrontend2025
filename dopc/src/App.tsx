@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import type {
   FormDataToValidate,
   FormInput,
@@ -64,7 +64,7 @@ function App() {
     }
   }, [])
 
-  const handleGetLocation = () => {
+  const handleGetLocation = useCallback(() => {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -85,49 +85,61 @@ function App() {
       console.log('Geolocation is not supported by this browser.')
       //do i need to print message??
     }
-  }
+  }, [])
 
-  const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+  const handleFormSubmit = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault()
 
-    try {
-      if (!venueData) {
-        setErrors({ venueSlug: 'Venue data not loaded yet' })
-        return
-      }
-
-      const dataToValidate: FormDataToValidate = { ...formInput }
-
-      const validated: InitialFormData = validationSchema.parse(dataToValidate)
-
-      const breakdown = calculatePriceBreakdown({
-        cartValue: validated.cartValue,
-        userLatitude: validated.userLatitude,
-        userLongitude: validated.userLongitude,
-        venueLatitude: venueData.latitude,
-        venueLongitude: venueData.longitude,
-        orderMinimum: venueData.orderMinimum,
-        basePrice: venueData.basePrice,
-        distanceRanges: venueData.distanceRanges,
-      })
-
-      setPriceBreakdown(breakdown)
-
-      setErrors({})
-      return
-    } catch (err) {
-      if (err instanceof ZodError) {
-        const newErrors: Partial<Record<keyof FormDataToValidate, string>> = {}
-        for (const issue of err.errors) {
-          const field = issue.path[0] as keyof FormDataToValidate
-          newErrors[field] = issue.message
+      try {
+        if (!venueData) {
+          setErrors({ venueSlug: 'Venue data not loaded yet' })
+          return
         }
-        setErrors(newErrors)
-      } else {
-        console.error('Unknown error:', err)
+
+        const dataToValidate: FormDataToValidate = { ...formInput }
+
+        const validated: InitialFormData =
+          validationSchema.parse(dataToValidate)
+
+        const breakdown = calculatePriceBreakdown({
+          cartValue: validated.cartValue,
+          userLatitude: validated.userLatitude,
+          userLongitude: validated.userLongitude,
+          venueLatitude: venueData.latitude,
+          venueLongitude: venueData.longitude,
+          orderMinimum: venueData.orderMinimum,
+          basePrice: venueData.basePrice,
+          distanceRanges: venueData.distanceRanges,
+        })
+
+        setPriceBreakdown(breakdown)
+
+        setErrors({})
+        return
+      } catch (err) {
+        if (err instanceof ZodError) {
+          const newErrors: Partial<Record<keyof FormDataToValidate, string>> =
+            {}
+          for (const issue of err.errors) {
+            const field = issue.path[0] as keyof FormDataToValidate
+            newErrors[field] = issue.message
+          }
+          setErrors(newErrors)
+
+          // to set focus on the invalid field
+          const firstErrorField = err.errors[0].path[0]
+          const element = document.getElementById(String(firstErrorField))
+          if (element) {
+            element.focus()
+          }
+        } else {
+          console.error('Unknown error:', err)
+        }
       }
-    }
-  }
+    },
+    [formInput, venueData]
+  )
 
   useEffect(() => {
     loadVenueData(formInput.venueSlug)

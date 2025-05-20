@@ -38,6 +38,7 @@ const Form = ({
           Venue
         </label>
         <select
+          id="venueSlug"
           value={formInput.venueSlug}
           onChange={(e) =>
             setFormInput((prev) => ({
@@ -64,7 +65,10 @@ const Form = ({
           Cart Value (€)
         </label>
         <input
+          id="cartValue"
+          inputMode="decimal"
           type="text"
+          aria-describedby={errors.cartValue ? 'cartValue-error' : undefined}
           className="form-control"
           value={formInput.cartValue}
           onChange={(e) =>
@@ -74,7 +78,14 @@ const Form = ({
           data-test-id="cartValue"
         />
         {errors.cartValue && (
-          <div className="text-danger">{errors.cartValue}</div>
+          <div
+            id="cartValue-error"
+            role="alert"
+            aria-live="assertive"
+            className="text-danger"
+          >
+            {errors.cartValue}
+          </div>
         )}
       </div>
 
@@ -83,6 +94,8 @@ const Form = ({
           Latitude
         </label>
         <input
+          id="userLatitude"
+          inputMode="decimal"
           type="text"
           className="form-control"
           value={formInput.userLatitude}
@@ -102,6 +115,8 @@ const Form = ({
           Longitude
         </label>
         <input
+          id="userLongitude"
+          inputMode="decimal"
           type="text"
           className="form-control"
           value={formInput.userLongitude}
