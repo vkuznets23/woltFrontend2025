@@ -1,5 +1,4 @@
-import type { VenueSlug } from '../types'
-import type { FormDataToValidate } from '../utils/validation'
+import type { FormDataToValidate, VenueSlug } from '../types'
 
 const validVenueSlugs: VenueSlug[] = ['home-assignment-venue-helsinki']
 

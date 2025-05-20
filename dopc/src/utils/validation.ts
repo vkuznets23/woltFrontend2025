@@ -1,5 +1,4 @@
 import { z } from 'zod'
-import type { VenueSlug } from '../types'
 
 export const venueSlugSchema = z.enum(['home-assignment-venue-helsinki'])
 
@@ -64,12 +63,3 @@ export const validationSchema = z.object({
   userLatitude: coordinateSchema('latitude'),
   userLongitude: coordinateSchema('longitude'),
 })
-
-export type InitialFormData = z.infer<typeof validationSchema>
-
-export type FormDataToValidate = {
-  venueSlug: VenueSlug
-  cartValue: string
-  userLatitude: string
-  userLongitude: string
-}

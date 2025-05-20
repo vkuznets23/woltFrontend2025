@@ -1,13 +1,15 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { useCallback, useEffect, useState } from 'react'
-import type { FormInput, PriceBreakdown, VenueData } from './types'
+import type {
+  FormDataToValidate,
+  FormInput,
+  InitialFormData,
+  PriceBreakdown,
+  VenueData,
+} from './types'
 import { fetchDynamicVenue, fetchStaticVenue } from './services/fetchVenueData'
 import { ZodError } from 'zod'
-import {
-  validationSchema,
-  type FormDataToValidate,
-  type InitialFormData,
-} from './utils/validation'
+import { validationSchema } from './utils/validation'
 import { calculatePriceBreakdown } from './utils/breakdownCalculation'
 import { Form, PriceBreakdownDisplay } from './components'
 
