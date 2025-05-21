@@ -141,6 +141,9 @@ function App() {
     [formInput, venueData]
   )
 
+  // flag to disable button
+  const isSubmitDisabled = !venueData
+
   useEffect(() => {
     loadVenueData(formInput.venueSlug)
   }, [formInput.venueSlug, loadVenueData])
@@ -154,6 +157,7 @@ function App() {
         errors={errors}
         handleGetLocation={handleGetLocation}
         handleFormSubmit={handleFormSubmit}
+        isSubmitDisabled={isSubmitDisabled}
       />
       <PriceBreakdownDisplay
         cartValue={priceBreakdown.cartValue}

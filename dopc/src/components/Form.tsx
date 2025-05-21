@@ -1,3 +1,4 @@
+import React from 'react'
 import type { FormDataToValidate, VenueSlug } from '../types'
 
 const validVenueSlugs: VenueSlug[] = ['home-assignment-venue-helsinki']
@@ -22,6 +23,7 @@ export interface FormProps {
       userLongitude: string
     }>
   >
+  isSubmitDisabled: boolean
 }
 
 const Form = ({
@@ -30,6 +32,7 @@ const Form = ({
   handleFormSubmit,
   errors,
   handleGetLocation,
+  isSubmitDisabled,
 }: FormProps) => {
   return (
     <form onSubmit={handleFormSubmit} data-test-id="form" className="mb-4">
@@ -97,16 +100,29 @@ const Form = ({
           id="userLatitude"
           inputMode="decimal"
           type="text"
+          aria-describedby={
+            errors.userLatitude ? 'userLatitude-error' : undefined
+          }
           className="form-control"
           value={formInput.userLatitude}
           onChange={(e) =>
-            setFormInput((prev) => ({ ...prev, userLatitude: e.target.value }))
+            setFormInput((prev) => ({
+              ...prev,
+              userLatitude: e.target.value,
+            }))
           }
           placeholder="e.g. 60.16990"
           data-test-id="userLatitude"
         />
         {errors.userLatitude && (
-          <div className="text-danger">{errors.userLatitude}</div>
+          <div
+            id="userLatitude-error"
+            role="alert"
+            aria-live="assertive"
+            className="text-danger"
+          >
+            {errors.userLatitude}
+          </div>
         )}
       </div>
 
@@ -118,16 +134,29 @@ const Form = ({
           id="userLongitude"
           inputMode="decimal"
           type="text"
+          aria-describedby={
+            errors.userLongitude ? 'userLongitude-error' : undefined
+          }
           className="form-control"
           value={formInput.userLongitude}
           onChange={(e) =>
-            setFormInput((prev) => ({ ...prev, userLongitude: e.target.value }))
+            setFormInput((prev) => ({
+              ...prev,
+              userLongitude: e.target.value,
+            }))
           }
           placeholder="e.g. 24.93840"
           data-test-id="userLongitude"
         />
         {errors.userLongitude && (
-          <div className="text-danger">{errors.userLongitude}</div>
+          <div
+            id="userLongitude-error"
+            role="alert"
+            aria-live="assertive"
+            className="text-danger"
+          >
+            {errors.userLongitude}
+          </div>
         )}
       </div>
 
@@ -144,6 +173,7 @@ const Form = ({
           type="submit"
           data-test-id="submitButton"
           className="btn btn-primary"
+          disabled={isSubmitDisabled}
         >
           Calculate delivery price
         </button>
