@@ -3,8 +3,8 @@ import type { PriceBreakdown, DistanceRange } from '../types'
 export const deliveryDistance = (
   userLat: number,
   userLon: number,
-  venueLat?: number | undefined,
-  venueLog?: number | undefined
+  venueLat: number | undefined,
+  venueLog: number | undefined
 ): number => {
   if (venueLat === undefined || venueLog === undefined) return 0
 
