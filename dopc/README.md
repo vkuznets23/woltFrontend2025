@@ -1,54 +1,78 @@
-# React + TypeScript + Vite
+# 🚚 Delivery Order Price Calculator
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a React-based application that calculates the delivery price for a food order based on the user's location, cart value, and venue-specific delivery rules.
 
-Currently, two official plugins are available:
+## 🧩 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Enter cart value and delivery location
+- Automatically fetch your location using the browser's geolocation API
+- Dynamically fetch venue data (static and dynamic) from APIs
+  Calculates:
+  - Delivery fee based on distance
+  - Small order surcharge if cart value is below minimum
+  - Total delivery cost
+- Real-time form validation with user-friendly error messages
 
-## Expanding the ESLint configuration
+## 🔧 Technologies Used
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- React + Vite
+- TypeScript
+- Zod for schema validation
+- Bootstrap 5 for basic styling
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## 📁 Folder Structure
+
+```
+src/
+├── components/ # Reusable UI components
+├── services/   # API calls to fetch venue data
+├── utils/      # Validation and calculation logic
+├── types.ts    # TypeScript types and interfaces
+├── App.tsx     # Main app logic
+tests/
+├── e2e/        # playwright tests
+├── unit/       # unit tests
+
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🧪 Testing
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+You can run unit or integration tests using:
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+npm run test:unit
 ```
+
+```bash
+npm run test:e2e -- --ui
+```
+
+## 📦 Installation
+
+```bash
+git clone https://github.com/vkuznets23/woltFrontend2025.git
+cd dopc
+npm install
+npm run dev
+```
+
+Then open http://localhost:5173
+
+## 📍 Example Usage
+
+- Select a venue (default: home-assignment-venue-helsinki)
+- Enter your cart value (e.g. 24.90)
+- Either enter your latitude/longitude manually or click "Get location"
+- Click "Calculate delivery price"
+- View price breakdown below the form
+
+## ✅ Accessibility
+
+This project follows basic web accessibility principles:
+
+- All form inputs are associated with `<label>` using `htmlFor`.
+- Error messages use `aria-live="assertive"` and `aria-describedby`.
+- Invalid fields are marked with `aria-invalid`.
+- Fully keyboard navigable — all elements can be reached via Tab.
+- Uses semantic HTML: buttons, form, labels, inputs, etc.
+- VoiceOver and screen readers tested (macOS).

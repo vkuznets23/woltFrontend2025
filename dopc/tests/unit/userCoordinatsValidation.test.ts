@@ -2,8 +2,6 @@ import { describe, it, expect } from 'vitest'
 import { validationSchema } from '../../src/utils/validation'
 import { ZodError } from 'zod'
 
-//for longitutde i should have all the same but differante range
-
 describe('latitude field validation', () => {
   // latitude: '6e1'
 
@@ -283,7 +281,7 @@ describe('latitude field validation', () => {
       }
     }
   })
-  it('latitude is bigger that -90', () => {
+  it('latitude is smaller that -90', () => {
     const invalidData = {
       ...baseData,
       userLatitude: '190.00122',
@@ -295,6 +293,42 @@ describe('latitude field validation', () => {
       if (err instanceof ZodError) {
         expect(err.errors[0].message).toMatch(
           'latitude must be in a range from -90 to 90'
+        )
+      } else {
+        throw err
+      }
+    }
+  })
+  it('longitude is bigger that 180', () => {
+    const invalidData = {
+      ...baseData,
+      userLongitude: '190.00122',
+    }
+
+    try {
+      validationSchema.parse(invalidData)
+    } catch (err) {
+      if (err instanceof ZodError) {
+        expect(err.errors[0].message).toMatch(
+          'longitude must be in a range from -180 to 180'
+        )
+      } else {
+        throw err
+      }
+    }
+  })
+  it('longitude is smaller that -180', () => {
+    const invalidData = {
+      ...baseData,
+      userLongitude: '-190.00122',
+    }
+
+    try {
+      validationSchema.parse(invalidData)
+    } catch (err) {
+      if (err instanceof ZodError) {
+        expect(err.errors[0].message).toMatch(
+          'longitude must be in a range from -180 to 180'
         )
       } else {
         throw err

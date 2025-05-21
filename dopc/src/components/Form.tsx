@@ -71,6 +71,7 @@ const Form = ({
           id="cartValue"
           inputMode="decimal"
           type="text"
+          aria-invalid={!!errors.cartValue}
           aria-describedby={errors.cartValue ? 'cartValue-error' : undefined}
           className="form-control"
           value={formInput.cartValue}
@@ -100,6 +101,7 @@ const Form = ({
           id="userLatitude"
           inputMode="decimal"
           type="text"
+          aria-invalid={!!errors.userLatitude}
           aria-describedby={
             errors.userLatitude ? 'userLatitude-error' : undefined
           }
@@ -134,6 +136,7 @@ const Form = ({
           id="userLongitude"
           inputMode="decimal"
           type="text"
+          aria-invalid={!!errors.userLongitude}
           aria-describedby={
             errors.userLongitude ? 'userLongitude-error' : undefined
           }
