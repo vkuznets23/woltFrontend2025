@@ -3,15 +3,13 @@ import React, { useCallback, useEffect, useState } from 'react'
 import type {
   FormDataToValidate,
   FormInput,
-  InitialFormData,
   PriceBreakdown,
   VenueData,
 } from './types'
 import { fetchDynamicVenue, fetchStaticVenue } from './services/fetchVenueData'
-import { ZodError } from 'zod'
-import { validationSchema } from './utils/validation'
 import { calculatePriceBreakdown } from './utils/breakdownCalculation'
 import { Form, PriceBreakdownDisplay } from './components'
+import { validateRequest } from './utils/inputValidation'
 
 const INITIAL_FORMINPUT: FormInput = {
   venueSlug: 'home-assignment-venue-helsinki',
@@ -87,59 +85,50 @@ function App() {
     }
   }, [])
 
-  const handleFormSubmit = useCallback(
-    (e: React.FormEvent) => {
-      e.preventDefault()
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
 
-      try {
-        if (!venueData) {
-          setErrors({ venueSlug: 'Venue data not loaded yet' })
-          return
-        }
+    if (!venueData) {
+      setErrors({ venueSlug: 'Venue data not loaded yet' })
+      return
+    }
 
-        const dataToValidate: FormDataToValidate = { ...formInput }
+    const validationResult = validateRequest({
+      venueSlug: formInput.venueSlug,
+      cartValue: formInput.cartValue,
+      latitude: formInput.userLatitude,
+      longitude: formInput.userLongitude,
+    })
 
-        const validated: InitialFormData =
-          validationSchema.parse(dataToValidate)
+    if (!validationResult.success) {
+      setErrors(validationResult.errors)
 
-        const breakdown = calculatePriceBreakdown({
-          cartValue: validated.cartValue,
-          userLatitude: validated.userLatitude,
-          userLongitude: validated.userLongitude,
-          venueLatitude: venueData.latitude,
-          venueLongitude: venueData.longitude,
-          orderMinimum: venueData.orderMinimum,
-          basePrice: venueData.basePrice,
-          distanceRanges: venueData.distanceRanges,
-        })
-
-        setPriceBreakdown(breakdown)
-
-        setErrors({})
-        return
-      } catch (err) {
-        if (err instanceof ZodError) {
-          const newErrors: Partial<Record<keyof FormDataToValidate, string>> =
-            {}
-          for (const issue of err.errors) {
-            const field = issue.path[0] as keyof FormDataToValidate
-            newErrors[field] = issue.message
-          }
-          setErrors(newErrors)
-
-          // to set focus on the invalid field
-          const firstErrorField = err.errors[0].path[0]
-          const element = document.getElementById(String(firstErrorField))
-          if (element) {
-            element.focus()
-          }
-        } else {
-          console.error('Unknown error:', err)
-        }
+      const firstErrorField = Object.keys(validationResult.errors)[0]
+      if (firstErrorField) {
+        const el = document.getElementById(firstErrorField)
+        if (el) el.focus()
       }
-    },
-    [formInput, venueData]
-  )
+
+      return
+    }
+
+    const validated = validationResult.data
+
+    const breakdown = calculatePriceBreakdown({
+      cartValue: validated.cartValue,
+      userLatitude: validated.latitude,
+      userLongitude: validated.longitude,
+      venueLatitude: venueData.latitude,
+      venueLongitude: venueData.longitude,
+      orderMinimum: venueData.orderMinimum,
+      basePrice: venueData.basePrice,
+      distanceRanges: venueData.distanceRanges,
+    })
+
+    setPriceBreakdown(breakdown)
+
+    setErrors({})
+  }
 
   // flag to disable button
   const isSubmitDisabled = !venueData
