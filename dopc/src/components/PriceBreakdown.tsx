@@ -11,51 +11,46 @@ const PriceBreakdownDisplay = ({
   return (
     <div>
       <h2>Price breakdown</h2>
-      <div
-        className="d-flex justify-content-between mb-2"
-        data-raw-value={cartValue}
-      >
-        <span data-test-id="cartValueLabel">Cart value:</span>
-        <span data-test-id="formattedCartValue">{formatEuro(cartValue)} €</span>
-      </div>
-      <div
-        className="d-flex justify-content-between mb-2"
-        data-raw-value={deliveryFee}
-      >
-        <span data-test-id="deliveryFeeValueLabel">Delivery fee:</span>
-        <span data-test-id="deliveryFeeValue">{formatEuro(deliveryFee)} €</span>
-      </div>
-      <div
-        className="d-flex justify-content-between mb-2"
-        data-raw-value={deliveryDistance}
-      >
-        <span data-test-id="deliveryDistanceValueLabel">
-          Delivery distance:
-        </span>
-        <span data-test-id="deliveryDistanceValue">{deliveryDistance} m</span>
-      </div>
-      <div
-        className="d-flex justify-content-between mb-2"
-        data-raw-value={smallOrderSurcharge}
-      >
-        <span data-test-id="smallOrderSurchargeValueLabel">
-          Small order surcharge:
-        </span>
-        <span data-test-id="smallOrderSurchargeValue">
-          {formatEuro(smallOrderSurcharge)} €
-        </span>
-      </div>
-      <div
-        className="d-flex justify-content-between mb-2"
-        data-raw-value={totalPrice}
-      >
-        <span data-test-id="totalPriceValueLabel">
-          <strong>Total price:</strong>
-        </span>
-        <span data-test-id="totalPriceValue">
-          <strong>{formatEuro(totalPrice)} €</strong>
-        </span>
-      </div>
+      <table className="w-100" style={{ borderCollapse: 'collapse' }}>
+        <tbody>
+          <tr data-raw-value={cartValue}>
+            <td data-test-id="cartValueLabel">Cart value:</td>
+            <td data-test-id="formattedCartValue" className="text-end">
+              {formatEuro(cartValue)} €
+            </td>
+          </tr>
+          <tr data-raw-value={deliveryFee}>
+            <td data-test-id="deliveryFeeValueLabel">Delivery fee:</td>
+            <td data-test-id="deliveryFeeValue" className="text-end">
+              {formatEuro(deliveryFee)} €
+            </td>
+          </tr>
+          <tr data-raw-value={deliveryDistance}>
+            <td data-test-id="deliveryDistanceValueLabel">
+              Delivery distance:
+            </td>
+            <td data-test-id="deliveryDistanceValue" className="text-end">
+              {deliveryDistance} m
+            </td>
+          </tr>
+          <tr data-raw-value={smallOrderSurcharge}>
+            <td data-test-id="smallOrderSurchargeValueLabel">
+              Small order surcharge:
+            </td>
+            <td data-test-id="smallOrderSurchargeValue" className="text-end">
+              {formatEuro(smallOrderSurcharge)} €
+            </td>
+          </tr>
+          <tr data-raw-value={totalPrice}>
+            <td data-test-id="totalPriceValueLabel">
+              <strong>Total price:</strong>
+            </td>
+            <td data-test-id="totalPriceValue" className="text-end">
+              <strong>{formatEuro(totalPrice)} €</strong>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   )
 }

@@ -11,14 +11,12 @@ This is a React-based application that calculates the delivery price for a food 
   - Delivery fee based on distance
   - Small order surcharge if cart value is below minimum
   - Total delivery cost
-- Real-time form validation with user-friendly error messages
+- Form validation with user-friendly error messages
 
 ## 🔧 Technologies Used
 
 - React + Vite
 - TypeScript
-- Zod for schema validation
-- Bootstrap 5 for basic styling
 
 ## 📁 Folder Structure
 
