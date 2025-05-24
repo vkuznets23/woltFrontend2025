@@ -1,6 +1,6 @@
 import type { FormInput } from '../types/formInput'
 import type { ValidationErrors } from '../types/validation'
-// import VenueSlugDropdown from './venueSlugField'
+import VenueSlugDropdown from './venueSlugField'
 
 interface FormInputProps {
   formInput: FormInput
@@ -19,7 +19,7 @@ const Form = ({
 }: FormInputProps) => {
   return (
     <form onSubmit={handleFormSubmit} data-test-id="form">
-      {/* <div>
+      <div>
         <label htmlFor="venueSlug" className="form-label">
           Venue Slug
         </label>
@@ -30,7 +30,7 @@ const Form = ({
           }
           errors={errors}
         />
-      </div> */}
+      </div>
       <div className="form-group">
         <input
           id="cartValue"
