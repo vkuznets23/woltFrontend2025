@@ -1,5 +1,8 @@
 import axios from 'axios'
-import type { StaticVenueResponse, DynamicVenueResponse } from '../types'
+import type {
+  DynamicVenueResponse,
+  StaticVenueResponse,
+} from '../types/venueData'
 
 const BASE_URL =
   'https://consumer-api.development.dev.woltapi.com/home-assignment-api/v1/venues'

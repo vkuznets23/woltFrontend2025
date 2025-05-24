@@ -1,40 +1,11 @@
-type ValidationResult =
-  | { success: true; value: number }
-  | { success: false; error: string }
-
-type VenueSLugValidationResult =
-  | { success: true; value: VenueSlug }
-  | { success: false; error: string }
-
-type RequestInput = {
-  venueSlug: unknown
-  cartValue: unknown
-  latitude: unknown
-  longitude: unknown
-}
-
-type ValidationErrors = {
-  venueSlug?: string
-  cartValue?: string
-  userLatitude?: string
-  userLongitude?: string
-}
-
-type ValidationOutput =
-  | {
-      success: true
-      data: {
-        venueSlug: VenueSlug
-        cartValue: number
-        latitude: number
-        longitude: number
-      }
-    }
-  | { success: false; errors: ValidationErrors }
-
-export enum VenueSlug {
-  Helsinki = 'home-assignment-venue-helsinki',
-}
+import { VenueSlug } from '../types/formInput'
+import type {
+  RequestInput,
+  ValidationErrors,
+  ValidationOutpu,
+  ValidationResult,
+  VenueSLugValidationResult,
+} from '../types/validation'
 
 export const validateVenueSlug = (
   input: unknown
@@ -81,12 +52,12 @@ export const cartValueValidation = (input: unknown): ValidationResult => {
   return { success: true, value: input }
 }
 
-export function validateCoordinate(
+export const validateCoordinate = (
   input: unknown,
   type: 'latitude' | 'longitude',
   min: number,
   max: number
-): ValidationResult {
+): ValidationResult => {
   if (input === null || input === undefined) {
     return { success: false, error: `${type} is required` }
   }
@@ -132,12 +103,17 @@ export function validateCoordinate(
   }
 }
 
-export function validateRequest(input: RequestInput): ValidationOutput {
+export function validateRequest(input: RequestInput): ValidationOutpu {
   const venueValidation = validateVenueSlug(input.venueSlug)
   const cartValidation = cartValueValidation(input.cartValue)
-  const latValidation = validateCoordinate(input.latitude, 'latitude', -90, 90)
+  const latValidation = validateCoordinate(
+    input.userLatitude,
+    'latitude',
+    -90,
+    90
+  )
   const lonValidation = validateCoordinate(
-    input.longitude,
+    input.userLongitude,
     'longitude',
     -180,
     180

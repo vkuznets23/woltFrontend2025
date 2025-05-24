@@ -1,15 +1,17 @@
-import type { VenueSlug } from '../utils/inputValidation'
+export enum VenueSlug {
+  Helsinki = 'home-assignment-venue-helsinki',
+}
 
 export interface FormInput {
-  venueSlug: VenueSlug | null
+  venueSlug: VenueSlug | string
   cartValue: string
   userLatitude: string
   userLongitude: string
 }
 
-export interface FormDataToValidate {
+export interface ValidForm {
   venueSlug: VenueSlug
-  cartValue: string
-  userLatitude: string
-  userLongitude: string
+  cartValue: number
+  userLatitude: number
+  userLongitude: number
 }

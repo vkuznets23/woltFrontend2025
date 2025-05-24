@@ -1,4 +1,5 @@
-import type { PriceBreakdown, DistanceRange } from '../types'
+import type { PriceBreakdown } from '../types/priceBreakdown'
+import type { DistanceRange } from '../types/venueData'
 
 export const deliveryDistance = (
   userLat: number,

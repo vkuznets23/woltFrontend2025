@@ -1,18 +1,16 @@
-import 'bootstrap/dist/css/bootstrap.min.css'
-import React, { useCallback, useEffect, useState } from 'react'
-import type {
-  FormDataToValidate,
-  FormInput,
-  PriceBreakdown,
-  VenueData,
-} from './types'
+import { useEffect, useState } from 'react'
+import type { FormInput } from './types/formInput'
+import type { PriceBreakdown } from './types/priceBreakdown'
+import type { VenueData } from './types/venueData'
+import type { ValidationErrors } from './types/validation'
 import { fetchDynamicVenue, fetchStaticVenue } from './services/fetchVenueData'
-import { calculatePriceBreakdown } from './utils/breakdownCalculation'
-import { Form, PriceBreakdownDisplay } from './components'
-import { validateRequest } from './utils/inputValidation'
+import { validateRequest } from './utils/formValidation'
+import { calculatePriceBreakdown } from './utils/priceBreakdown'
+import PriceBreakdownDisplay from './components/PriceBreackdown'
+import Form from './components/Form'
 
 const INITIAL_FORMINPUT: FormInput = {
-  venueSlug: null,
+  venueSlug: '',
   cartValue: '',
   userLatitude: '',
   userLongitude: '',
@@ -31,11 +29,9 @@ function App() {
   const [priceBreakdown, setPriceBreakdown] =
     useState<PriceBreakdown>(INITIAL_BREAKDOWN)
   const [venueData, setVenueData] = useState<VenueData | null>(null)
-  const [errors, setErrors] = useState<
-    Partial<Record<keyof FormDataToValidate, string>>
-  >({})
+  const [errors, setErrors] = useState<ValidationErrors>({})
 
-  const loadVenueData = useCallback(async (venueSlug: string) => {
+  const loadVenueData = async (venueSlug: string) => {
     try {
       const [staticData, dynamicData] = await Promise.all([
         fetchStaticVenue(venueSlug),
@@ -60,9 +56,15 @@ function App() {
     } catch (err) {
       console.error('Failed to load venue data:', err)
     }
-  }, [])
+  }
 
-  const handleGetLocation = useCallback(() => {
+  useEffect(() => {
+    if (formInput.venueSlug) {
+      loadVenueData(formInput.venueSlug)
+    }
+  }, [formInput.venueSlug])
+
+  const handleGetLocation = () => {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -81,9 +83,8 @@ function App() {
       )
     } else {
       console.log('Geolocation is not supported by this browser.')
-      //do i need to print message??
     }
-  }, [])
+  }
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -96,8 +97,8 @@ function App() {
     const validationResult = validateRequest({
       venueSlug: formInput.venueSlug,
       cartValue: formInput.cartValue,
-      latitude: formInput.userLatitude,
-      longitude: formInput.userLongitude,
+      userLatitude: formInput.userLatitude,
+      userLongitude: formInput.userLongitude,
     })
 
     console.log(validationResult)
@@ -105,21 +106,19 @@ function App() {
     if (!validationResult.success) {
       setErrors(validationResult.errors)
 
+      // set focus to the first error field
       const firstErrorField = Object.keys(validationResult.errors)[0]
       if (firstErrorField) {
         const el = document.getElementById(firstErrorField)
         if (el) el.focus()
       }
-
       return
     }
 
-    const validated = validationResult.data
-
     const breakdown = calculatePriceBreakdown({
-      cartValue: validated.cartValue,
-      userLatitude: validated.latitude,
-      userLongitude: validated.longitude,
+      cartValue: validationResult.data.cartValue,
+      userLatitude: validationResult.data.latitude,
+      userLongitude: validationResult.data.longitude,
       venueLatitude: venueData.latitude,
       venueLongitude: venueData.longitude,
       orderMinimum: venueData.orderMinimum,
@@ -128,19 +127,11 @@ function App() {
     })
 
     setPriceBreakdown(breakdown)
-
     setErrors({})
   }
 
-  // flag to disable button
-  const isSubmitDisabled = !venueData
-
-  useEffect(() => {
-    loadVenueData(formInput.venueSlug)
-  }, [formInput.venueSlug, loadVenueData])
-
   return (
-    <div className="container mx-auto mt-5" style={{ maxWidth: '600px' }}>
+    <div>
       <h2>Delivery Order Price Calculator</h2>
       <Form
         formInput={formInput}
@@ -148,7 +139,6 @@ function App() {
         errors={errors}
         handleGetLocation={handleGetLocation}
         handleFormSubmit={handleFormSubmit}
-        isSubmitDisabled={isSubmitDisabled}
       />
       <PriceBreakdownDisplay
         cartValue={priceBreakdown.cartValue}

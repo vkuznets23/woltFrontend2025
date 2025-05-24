@@ -1,28 +1,13 @@
-import React from 'react'
-import type { FormDataToValidate } from '../types'
-import CustomSearchableDropdown from './dropdown'
+import type { FormInput } from '../types/formInput'
+import type { ValidationErrors } from '../types/validation'
+import VenueSlugDropdown from './venueSlugField'
 
-export interface FormProps {
-  formInput: {
-    venueSlug: VenueSlug
-    cartValue: string
-    userLatitude: string
-    userLongitude: string
-  }
-  errors: Partial<Record<keyof FormDataToValidate, string>>
-
+interface FormInputProps {
+  formInput: FormInput
+  errors: ValidationErrors
   handleGetLocation: () => void
   handleFormSubmit: (e: React.FormEvent) => void
-
-  setFormInput: React.Dispatch<
-    React.SetStateAction<{
-      venueSlug: VenueSlug
-      cartValue: string
-      userLatitude: string
-      userLongitude: string
-    }>
-  >
-  isSubmitDisabled: boolean
+  setFormInput: React.Dispatch<React.SetStateAction<FormInput>>
 }
 
 const Form = ({
@@ -31,47 +16,46 @@ const Form = ({
   handleFormSubmit,
   errors,
   handleGetLocation,
-  isSubmitDisabled,
-}: FormProps) => {
+}: FormInputProps) => {
   return (
-    <form onSubmit={handleFormSubmit} data-test-id="form" className="mb-4">
-      <div className="mb-3">
-        <CustomSearchableDropdown
-          value={formInput.venueSlug}
-          onChange={(value) =>
-            setFormInput((prev) => ({
-              ...prev,
-              venueSlug: value,
-            }))
+    <form onSubmit={handleFormSubmit} data-test-id="form">
+      <div>
+        <label htmlFor="venueSlug" className="form-label">
+          Venue Slug
+        </label>
+        <VenueSlugDropdown
+          venue={formInput.venueSlug}
+          onChange={(newSlug) =>
+            setFormInput((prev) => ({ ...prev, venueSlug: newSlug }))
           }
+          errors={errors}
         />
         {/* <label htmlFor="venueSlug" className="form-label">
-          Venue
+          Venue Slug
         </label>
-        <select
+        <input
           id="venueSlug"
+          type="text"
+          aria-invalid={!!errors.venueSlug}
+          aria-describedby={errors.venueSlug ? 'venueSlug-error' : undefined}
           value={formInput.venueSlug}
           onChange={(e) =>
-            setFormInput((prev) => ({
-              ...prev,
-              venueSlug: e.target.value as VenueSlug,
-            }))
+            setFormInput((prev) => ({ ...prev, venueSlug: e.target.value }))
           }
-          className="form-select"
           data-test-id="venueSlug"
-        >
-          {validVenueSlugs.map((slug) => (
-            <option key={slug} value={slug}>
-              {slug}
-            </option>
-          ))}
-        </select> */}
+        />
         {errors.venueSlug && (
-          <div className="text-danger">{errors.venueSlug}</div>
-        )}
+          <div
+            id="cartValue-error"
+            role="alert"
+            aria-live="assertive"
+            className="text-danger"
+          >
+            {errors.venueSlug}
+          </div>
+        )} */}
       </div>
-
-      <div className="mb-3">
+      <div>
         <label htmlFor="cartValue" className="form-label">
           Cart Value (€)
         </label>
@@ -81,7 +65,6 @@ const Form = ({
           type="text"
           aria-invalid={!!errors.cartValue}
           aria-describedby={errors.cartValue ? 'cartValue-error' : undefined}
-          className="form-control"
           value={formInput.cartValue}
           onChange={(e) =>
             setFormInput((prev) => ({ ...prev, cartValue: e.target.value }))
@@ -100,8 +83,7 @@ const Form = ({
           </div>
         )}
       </div>
-
-      <div className="mb-3">
+      <div>
         <label htmlFor="userLatitude" className="form-label">
           Latitude
         </label>
@@ -113,7 +95,6 @@ const Form = ({
           aria-describedby={
             errors.userLatitude ? 'userLatitude-error' : undefined
           }
-          className="form-control"
           value={formInput.userLatitude}
           onChange={(e) =>
             setFormInput((prev) => ({
@@ -135,7 +116,6 @@ const Form = ({
           </div>
         )}
       </div>
-
       <div className="mb-3">
         <label htmlFor="userLongitude" className="form-label">
           Longitude
@@ -148,7 +128,6 @@ const Form = ({
           aria-describedby={
             errors.userLongitude ? 'userLongitude-error' : undefined
           }
-          className="form-control"
           value={formInput.userLongitude}
           onChange={(e) =>
             setFormInput((prev) => ({
@@ -170,8 +149,7 @@ const Form = ({
           </div>
         )}
       </div>
-
-      <div className="mb-3 d-flex gap-2">
+      <div>
         <button
           type="button"
           className="btn btn-outline-secondary"
@@ -184,7 +162,6 @@ const Form = ({
           type="submit"
           data-test-id="submitButton"
           className="btn btn-primary"
-          disabled={isSubmitDisabled}
         >
           Calculate delivery price
         </button>

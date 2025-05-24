@@ -1,5 +1,5 @@
-import { formatEuro } from '../utils/breakdownCalculation'
-import type { PriceBreakdown } from '../types'
+import type { PriceBreakdown } from '../types/priceBreakdown'
+import { formatEuro } from '../utils/priceBreakdown'
 
 const PriceBreakdownDisplay = ({
   cartValue,
