@@ -1,6 +1,6 @@
 import type { FormInput } from '../types/formInput'
 import type { ValidationErrors } from '../types/validation'
-import VenueSlugDropdown from './venueSlugField'
+// import VenueSlugDropdown from './venueSlugField'
 
 interface FormInputProps {
   formInput: FormInput
@@ -19,7 +19,7 @@ const Form = ({
 }: FormInputProps) => {
   return (
     <form onSubmit={handleFormSubmit} data-test-id="form">
-      <div>
+      {/* <div>
         <label htmlFor="venueSlug" className="form-label">
           Venue Slug
         </label>
@@ -30,35 +30,8 @@ const Form = ({
           }
           errors={errors}
         />
-        {/* <label htmlFor="venueSlug" className="form-label">
-          Venue Slug
-        </label>
-        <input
-          id="venueSlug"
-          type="text"
-          aria-invalid={!!errors.venueSlug}
-          aria-describedby={errors.venueSlug ? 'venueSlug-error' : undefined}
-          value={formInput.venueSlug}
-          onChange={(e) =>
-            setFormInput((prev) => ({ ...prev, venueSlug: e.target.value }))
-          }
-          data-test-id="venueSlug"
-        />
-        {errors.venueSlug && (
-          <div
-            id="cartValue-error"
-            role="alert"
-            aria-live="assertive"
-            className="text-danger"
-          >
-            {errors.venueSlug}
-          </div>
-        )} */}
-      </div>
-      <div>
-        <label htmlFor="cartValue" className="form-label">
-          Cart Value (€)
-        </label>
+      </div> */}
+      <div className="form-group">
         <input
           id="cartValue"
           inputMode="decimal"
@@ -69,9 +42,13 @@ const Form = ({
           onChange={(e) =>
             setFormInput((prev) => ({ ...prev, cartValue: e.target.value }))
           }
-          placeholder="e.g. 24.90"
+          placeholder=""
+          required
           data-test-id="cartValue"
         />
+        <label htmlFor="cartValue" className="form-label">
+          Cart Value (€)
+        </label>
         {errors.cartValue && (
           <div
             id="cartValue-error"

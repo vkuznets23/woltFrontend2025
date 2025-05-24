@@ -131,8 +131,8 @@ function App() {
   }
 
   return (
-    <div>
-      <h2>Delivery Order Price Calculator</h2>
+    <div className="app-container">
+      <h1>Delivery Order Price Calculator</h1>
       <Form
         formInput={formInput}
         setFormInput={setFormInput}
