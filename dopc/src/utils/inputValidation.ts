@@ -2,6 +2,10 @@ type ValidationResult =
   | { success: true; value: number }
   | { success: false; error: string }
 
+type VenueSLugValidationResult =
+  | { success: true; value: VenueSlug }
+  | { success: false; error: string }
+
 type RequestInput = {
   venueSlug: unknown
   cartValue: unknown
@@ -30,6 +34,16 @@ type ValidationOutput =
 
 export enum VenueSlug {
   Helsinki = 'home-assignment-venue-helsinki',
+}
+
+export const validateVenueSlug = (
+  input: unknown
+): VenueSLugValidationResult => {
+  if (!Object.values(VenueSlug).includes(input as VenueSlug)) {
+    return { success: false, error: 'Invalid venue slug' }
+  }
+
+  return { success: true, value: input as VenueSlug }
 }
 
 export const cartValueValidation = (input: unknown): ValidationResult => {
@@ -119,6 +133,7 @@ export function validateCoordinate(
 }
 
 export function validateRequest(input: RequestInput): ValidationOutput {
+  const venueValidation = validateVenueSlug(input.venueSlug)
   const cartValidation = cartValueValidation(input.cartValue)
   const latValidation = validateCoordinate(input.latitude, 'latitude', -90, 90)
   const lonValidation = validateCoordinate(
@@ -129,11 +144,10 @@ export function validateRequest(input: RequestInput): ValidationOutput {
   )
 
   if (
+    venueValidation.success &&
     cartValidation.success &&
     latValidation.success &&
-    lonValidation.success &&
-    typeof input.venueSlug === 'string' &&
-    Object.values(VenueSlug).includes(input.venueSlug as VenueSlug)
+    lonValidation.success
   ) {
     return {
       success: true,
@@ -147,11 +161,8 @@ export function validateRequest(input: RequestInput): ValidationOutput {
   } else {
     const errors: ValidationErrors = {}
 
-    if (
-      typeof input.venueSlug !== 'string' ||
-      !Object.values(VenueSlug).includes(input.venueSlug as VenueSlug)
-    ) {
-      errors.venueSlug = 'Invalid venue slug'
+    if (!venueValidation.success) {
+      errors.venueSlug = venueValidation.error
     }
     if (!cartValidation.success) {
       errors.cartValue = cartValidation.error

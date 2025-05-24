@@ -1,7 +1,6 @@
 import React from 'react'
-import type { FormDataToValidate, VenueSlug } from '../types'
-
-const validVenueSlugs: VenueSlug[] = ['home-assignment-venue-helsinki']
+import type { FormDataToValidate } from '../types'
+import CustomSearchableDropdown from './dropdown'
 
 export interface FormProps {
   formInput: {
@@ -37,7 +36,16 @@ const Form = ({
   return (
     <form onSubmit={handleFormSubmit} data-test-id="form" className="mb-4">
       <div className="mb-3">
-        <label htmlFor="venueSlug" className="form-label">
+        <CustomSearchableDropdown
+          value={formInput.venueSlug}
+          onChange={(value) =>
+            setFormInput((prev) => ({
+              ...prev,
+              venueSlug: value,
+            }))
+          }
+        />
+        {/* <label htmlFor="venueSlug" className="form-label">
           Venue
         </label>
         <select
@@ -57,7 +65,7 @@ const Form = ({
               {slug}
             </option>
           ))}
-        </select>
+        </select> */}
         {errors.venueSlug && (
           <div className="text-danger">{errors.venueSlug}</div>
         )}

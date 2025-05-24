@@ -12,7 +12,7 @@ import { Form, PriceBreakdownDisplay } from './components'
 import { validateRequest } from './utils/inputValidation'
 
 const INITIAL_FORMINPUT: FormInput = {
-  venueSlug: 'home-assignment-venue-helsinki',
+  venueSlug: null,
   cartValue: '',
   userLatitude: '',
   userLongitude: '',
@@ -99,6 +99,8 @@ function App() {
       latitude: formInput.userLatitude,
       longitude: formInput.userLongitude,
     })
+
+    console.log(validationResult)
 
     if (!validationResult.success) {
       setErrors(validationResult.errors)

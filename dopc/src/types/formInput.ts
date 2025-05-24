@@ -1,18 +1,13 @@
-import { z } from 'zod'
-import { validationSchema, venueSlugSchema } from '../utils/validation'
+import type { VenueSlug } from '../utils/inputValidation'
 
 export interface FormInput {
-  venueSlug: VenueSlug
+  venueSlug: VenueSlug | null
   cartValue: string
   userLatitude: string
   userLongitude: string
 }
 
-export type VenueSlug = z.infer<typeof venueSlugSchema>
-
-export type InitialFormData = z.infer<typeof validationSchema>
-
-export type FormDataToValidate = {
+export interface FormDataToValidate {
   venueSlug: VenueSlug
   cartValue: string
   userLatitude: string
