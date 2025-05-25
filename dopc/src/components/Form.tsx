@@ -19,19 +19,14 @@ const Form = ({
 }: FormInputProps) => {
   return (
     <form onSubmit={handleFormSubmit} data-test-id="form">
-      <div>
-        <label htmlFor="venueSlug" className="form-label">
-          Venue Slug
-        </label>
-        <VenueSlugDropdown
-          venue={formInput.venueSlug}
-          onChange={(newSlug) =>
-            setFormInput((prev) => ({ ...prev, venueSlug: newSlug }))
-          }
-          errors={errors}
-        />
-      </div>
-      <div className="form-group">
+      <VenueSlugDropdown
+        venue={formInput.venueSlug}
+        onChange={(newSlug) =>
+          setFormInput((prev) => ({ ...prev, venueSlug: newSlug }))
+        }
+        errors={errors}
+      />
+      <div className="form-group form-group-big">
         <input
           id="cartValue"
           inputMode="decimal"
@@ -60,73 +55,73 @@ const Form = ({
           </div>
         )}
       </div>
-      <div>
-        <label htmlFor="userLatitude" className="form-label">
-          Latitude
-        </label>
-        <input
-          id="userLatitude"
-          inputMode="decimal"
-          type="text"
-          aria-invalid={!!errors.userLatitude}
-          aria-describedby={
-            errors.userLatitude ? 'userLatitude-error' : undefined
-          }
-          value={formInput.userLatitude}
-          onChange={(e) =>
-            setFormInput((prev) => ({
-              ...prev,
-              userLatitude: e.target.value,
-            }))
-          }
-          placeholder="e.g. 60.16990"
-          data-test-id="userLatitude"
-        />
-        {errors.userLatitude && (
-          <div
-            id="userLatitude-error"
-            role="alert"
-            aria-live="assertive"
-            className="text-danger"
-          >
-            {errors.userLatitude}
-          </div>
-        )}
-      </div>
-      <div className="mb-3">
-        <label htmlFor="userLongitude" className="form-label">
-          Longitude
-        </label>
-        <input
-          id="userLongitude"
-          inputMode="decimal"
-          type="text"
-          aria-invalid={!!errors.userLongitude}
-          aria-describedby={
-            errors.userLongitude ? 'userLongitude-error' : undefined
-          }
-          value={formInput.userLongitude}
-          onChange={(e) =>
-            setFormInput((prev) => ({
-              ...prev,
-              userLongitude: e.target.value,
-            }))
-          }
-          placeholder="e.g. 24.93840"
-          data-test-id="userLongitude"
-        />
-        {errors.userLongitude && (
-          <div
-            id="userLongitude-error"
-            role="alert"
-            aria-live="assertive"
-            className="text-danger"
-          >
-            {errors.userLongitude}
-          </div>
-        )}
-      </div>
-      <div>
+      <div className="form-row">
+        <div className="form-group form-group-small">
+          <input
+            id="userLatitude"
+            inputMode="decimal"
+            type="text"
+            aria-invalid={!!errors.userLatitude}
+            aria-describedby={
+              errors.userLatitude ? 'userLatitude-error' : undefined
+            }
+            value={formInput.userLatitude}
+            onChange={(e) =>
+              setFormInput((prev) => ({
+                ...prev,
+                userLatitude: e.target.value,
+              }))
+            }
+            placeholder=""
+            data-test-id="userLatitude"
+          />
+          <label htmlFor="userLatitude" className="form-label">
+            Latitude
+          </label>
+          {errors.userLatitude && (
+            <div
+              id="userLatitude-error"
+              role="alert"
+              aria-live="assertive"
+              className="text-danger"
+            >
+              {errors.userLatitude}
+            </div>
+          )}
+        </div>
+        <div className="form-group form-group-small">
+          <input
+            id="userLongitude"
+            inputMode="decimal"
+            type="text"
+            aria-invalid={!!errors.userLongitude}
+            aria-describedby={
+              errors.userLongitude ? 'userLongitude-error' : undefined
+            }
+            value={formInput.userLongitude}
+            onChange={(e) =>
+              setFormInput((prev) => ({
+                ...prev,
+                userLongitude: e.target.value,
+              }))
+            }
+            placeholder=""
+            data-test-id="userLongitude"
+          />
+          <label htmlFor="userLongitude" className="form-label">
+            Longitude
+          </label>
+          {errors.userLongitude && (
+            <div
+              id="userLongitude-error"
+              role="alert"
+              aria-live="assertive"
+              className="text-danger"
+            >
+              {errors.userLongitude}
+            </div>
+          )}
+        </div>
         <button
           type="button"
           className="btn btn-outline-secondary"
@@ -135,6 +130,8 @@ const Form = ({
         >
           Get location
         </button>
+      </div>
+      <div>
         <button
           type="submit"
           data-test-id="submitButton"

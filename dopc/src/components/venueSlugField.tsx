@@ -45,13 +45,17 @@ const VenueSlugDropdown = ({
   }
 
   return (
-    <div ref={dropdownRef}>
+    <div className="form-group form-group-big" ref={dropdownRef}>
       <input
         type="text"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         onClick={() => setShowDropdown(true)}
+        placeholder=""
       />
+      <label htmlFor="venueSlug" className="form-label">
+        Venue Slug
+      </label>
       {showDropdown && (
         <div>
           {filteredOptions.map((v) => (

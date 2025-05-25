@@ -1,20 +1,31 @@
+.form-row {
+  display: flex;
+  gap: 10px;
+}
+
 .form-group {
   position: relative;
-  margin-top: 20px;
-  max-width: 710px;
+  margin-top: 10px;
+}
+.form-group-big {
+  width: 710px;
+}
+
+.form-group-small {
+  width: 240px;
 }
 
 .form-group input {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   width: 100%;
-  height: 70px;
-  font-size: 20px;
+  height: 50px;
+  font-size: 16px;
   border: 2px solid #e4e4e5;
-  border-radius: 10px;
+  border-radius: 8px;
   box-sizing: border-box;
   padding-left: 20px;
-  padding-top: 36px;
+  padding-top: 24px;
   padding-bottom: 10px;
   line-height: normal;
 }
@@ -27,20 +38,21 @@
 
 .form-group label {
   position: absolute;
-  top: 12px;
+  top: 50%;
   left: 20px;
   color: #c6c6c7;
-  font-size: 20px;
+  font-size: 16px;
   transition: all 0.2s ease;
   opacity: 1;
-  transform: translateY(10px);
+  transform: translateY(-50%);
   pointer-events: none;
 }
 
 .form-group input:focus + label,
 .form-group input:not(:placeholder-shown) + label {
+  top: 5px;
   opacity: 1;
-  font-size: 16px;
+  font-size: 12px;
   transform: translateY(0);
   color: #75bfe7;
 }
