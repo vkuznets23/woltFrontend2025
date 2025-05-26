@@ -1,5 +1,8 @@
 export enum VenueSlug {
   Helsinki = 'home-assignment-venue-helsinki',
+  Berlin = 'home-assignment-venue-bbnsf',
+  Oulu = 'home-assignment-venue-oulu',
+  Ouluuu = 'very different',
 }
 
 export interface FormInput {

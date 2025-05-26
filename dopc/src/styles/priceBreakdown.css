@@ -1,0 +1,28 @@
+.price-breakdown-container {
+  width: 100%;
+  max-width: 710px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+.price-breakdown-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.price-breakdown-container td {
+  padding: 8px 12px;
+  vertical-align: middle;
+}
+
+.price-breakdown-container td:first-child {
+  text-align: left;
+}
+
+.price-breakdown-container td:last-child {
+  text-align: right;
+}

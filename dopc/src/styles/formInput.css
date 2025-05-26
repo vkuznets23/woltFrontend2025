@@ -1,3 +1,7 @@
+.form {
+  margin-bottom: 40px;
+}
+
 .form-row {
   display: flex;
   gap: 10px;
