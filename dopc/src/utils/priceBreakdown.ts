@@ -98,4 +98,18 @@ export const calculatePriceBreakdown = ({
   }
 }
 
-export const formatEuro = (cents: number) => (cents / 100).toFixed(2)
+// export const formatEuro = (cents: number) => (cents / 100).toFixed(2)
+export const formatCurrency = (
+  cents: number,
+  locale: string = 'en-US',
+  currency: string = 'EUR'
+): string => {
+  const amount = cents / 100
+
+  return new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency,
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(amount)
+}

@@ -1,5 +1,5 @@
 import type { PriceBreakdown } from '../types/priceBreakdown'
-import { formatEuro } from '../utils/priceBreakdown'
+import { formatCurrency } from '../utils/priceBreakdown'
 
 const PriceBreakdownDisplay = ({
   cartValue,
@@ -17,13 +17,13 @@ const PriceBreakdownDisplay = ({
             <tr data-raw-value={cartValue}>
               <td data-test-id="cartValueLabel">Cart value:</td>
               <td data-test-id="formattedCartValue" className="text-end">
-                {formatEuro(cartValue)} €
+                {formatCurrency(cartValue)}
               </td>
             </tr>
             <tr data-raw-value={deliveryFee}>
               <td data-test-id="deliveryFeeValueLabel">Delivery fee:</td>
               <td data-test-id="deliveryFeeValue" className="text-end">
-                {formatEuro(deliveryFee)} €
+                {formatCurrency(deliveryFee)}
               </td>
             </tr>
             <tr data-raw-value={deliveryDistance}>
@@ -39,7 +39,7 @@ const PriceBreakdownDisplay = ({
                 Small order surcharge:
               </td>
               <td data-test-id="smallOrderSurchargeValue" className="text-end">
-                {formatEuro(smallOrderSurcharge)} €
+                {formatCurrency(smallOrderSurcharge)}
               </td>
             </tr>
             <tr data-raw-value={totalPrice}>
@@ -47,7 +47,7 @@ const PriceBreakdownDisplay = ({
                 <strong>Total price:</strong>
               </td>
               <td data-test-id="totalPriceValue" className="text-end">
-                <strong>{formatEuro(totalPrice)} €</strong>
+                <strong>{formatCurrency(totalPrice)}</strong>
               </td>
             </tr>
           </tbody>
