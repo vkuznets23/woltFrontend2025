@@ -1,6 +1,6 @@
-import type { FormInput } from '../types/formInput'
-import type { AllErrors } from '../types/validation'
+import type { FormInput, AllErrors } from '../types'
 import VenueSlugDropdown from './venueSlugField'
+import { RiFocus3Line } from 'react-icons/ri'
 
 interface FormInputProps {
   formInput: FormInput
@@ -174,6 +174,7 @@ const Form = ({
             data-test-id="getLocationButton"
             onClick={handleGetLocation}
           >
+            <RiFocus3Line />
             Get location
           </button>
         </div>
