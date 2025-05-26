@@ -1,8 +1,12 @@
+/* =========================================
+   Buttons
+========================================= */
+
 .btn {
   margin-top: 10px;
   height: 50px;
-  border-radius: 8px;
-  font-size: 16px;
+  border-radius: var(--radius-default);
+  font-size: var(--font-size-base);
   transition: background-color 0.2s ease;
   cursor: pointer;
 }
@@ -10,28 +14,28 @@
 .btn-outline-secondary {
   position: relative;
   border: none;
-  background-color: #edf7fd;
-  color: #439cdb;
+  background-color: var(--color-brand-light);
+  color: var(--color-text-secondary);
   width: 210px;
 }
 
 .btn-outline-secondary:hover {
-  background-color: #dbeff9;
+  background-color: var(--color-brand-light-hover);
 }
 
 .btn-primary {
+  background-color: var(--color-brand-primary);
+  color: var(--color-white);
   border: none;
-  background-color: #439cda;
-  color: #ffffff;
   width: 100%;
 }
 
 .btn-primary:hover {
-  background-color: #4fa8df;
+  background-color: var(--color-brand-hover);
 }
 
 .btn:disabled {
-  color: #badff3;
+  color: var(--color-text-disabled);
   cursor: not-allowed;
   opacity: 0.6;
   pointer-events: none;

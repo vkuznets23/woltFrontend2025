@@ -1,11 +1,11 @@
 .price-breakdown-container {
   width: 100%;
-  max-width: 710px;
+  max-width: var(--layout-max-width);
   margin: 20px auto;
   padding: 20px;
-  background-color: #fff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
+  background-color: var(--color-bg-default);
+  box-shadow: var(--shadow-default);
+  border-radius: var(--radius-default);
   box-sizing: border-box;
 }
 
@@ -17,6 +17,8 @@
 .price-breakdown-container td {
   padding: 8px 12px;
   vertical-align: middle;
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
 }
 
 .price-breakdown-container td:first-child {
