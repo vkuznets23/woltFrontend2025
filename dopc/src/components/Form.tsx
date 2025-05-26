@@ -27,23 +27,25 @@ const Form = ({
         errors={errors}
       />
       <div className="form-group form-group-big">
-        <input
-          id="cartValue"
-          inputMode="decimal"
-          type="text"
-          aria-invalid={!!errors.cartValue}
-          aria-describedby={errors.cartValue ? 'cartValue-error' : undefined}
-          value={formInput.cartValue}
-          onChange={(e) =>
-            setFormInput((prev) => ({ ...prev, cartValue: e.target.value }))
-          }
-          placeholder=""
-          required
-          data-test-id="cartValue"
-        />
-        <label htmlFor="cartValue" className="form-label">
-          Cart Value (€)
-        </label>
+        <div className="input-label-wrapper">
+          <input
+            id="cartValue"
+            inputMode="decimal"
+            type="text"
+            className={errors.cartValue ? 'error' : ''}
+            aria-invalid={!!errors.cartValue}
+            aria-describedby={errors.cartValue ? 'cartValue-error' : undefined}
+            value={formInput.cartValue}
+            onChange={(e) =>
+              setFormInput((prev) => ({ ...prev, cartValue: e.target.value }))
+            }
+            placeholder=""
+            data-test-id="cartValue"
+          />
+          <label htmlFor="cartValue" className="form-label">
+            Cart Value (€)
+          </label>
+        </div>
         {errors.cartValue && (
           <div
             id="cartValue-error"
@@ -57,27 +59,30 @@ const Form = ({
       </div>
       <div className="form-row">
         <div className="form-group form-group-small">
-          <input
-            id="userLatitude"
-            inputMode="decimal"
-            type="text"
-            aria-invalid={!!errors.userLatitude}
-            aria-describedby={
-              errors.userLatitude ? 'userLatitude-error' : undefined
-            }
-            value={formInput.userLatitude}
-            onChange={(e) =>
-              setFormInput((prev) => ({
-                ...prev,
-                userLatitude: e.target.value,
-              }))
-            }
-            placeholder=""
-            data-test-id="userLatitude"
-          />
-          <label htmlFor="userLatitude" className="form-label">
-            Latitude
-          </label>
+          <div className="input-label-wrapper">
+            <input
+              id="userLatitude"
+              inputMode="decimal"
+              type="text"
+              className={errors.userLatitude ? 'error' : ''}
+              aria-invalid={!!errors.userLatitude}
+              aria-describedby={
+                errors.userLatitude ? 'userLatitude-error' : undefined
+              }
+              value={formInput.userLatitude}
+              onChange={(e) =>
+                setFormInput((prev) => ({
+                  ...prev,
+                  userLatitude: e.target.value,
+                }))
+              }
+              placeholder=""
+              data-test-id="userLatitude"
+            />
+            <label htmlFor="userLatitude" className="form-label">
+              Latitude
+            </label>
+          </div>
           {errors.userLatitude && (
             <div
               id="userLatitude-error"
@@ -90,27 +95,30 @@ const Form = ({
           )}
         </div>
         <div className="form-group form-group-small">
-          <input
-            id="userLongitude"
-            inputMode="decimal"
-            type="text"
-            aria-invalid={!!errors.userLongitude}
-            aria-describedby={
-              errors.userLongitude ? 'userLongitude-error' : undefined
-            }
-            value={formInput.userLongitude}
-            onChange={(e) =>
-              setFormInput((prev) => ({
-                ...prev,
-                userLongitude: e.target.value,
-              }))
-            }
-            placeholder=""
-            data-test-id="userLongitude"
-          />
-          <label htmlFor="userLongitude" className="form-label">
-            Longitude
-          </label>
+          <div className="input-label-wrapper">
+            <input
+              id="userLongitude"
+              inputMode="decimal"
+              type="text"
+              className={errors.userLongitude ? 'error' : ''}
+              aria-invalid={!!errors.userLongitude}
+              aria-describedby={
+                errors.userLongitude ? 'userLongitude-error' : undefined
+              }
+              value={formInput.userLongitude}
+              onChange={(e) =>
+                setFormInput((prev) => ({
+                  ...prev,
+                  userLongitude: e.target.value,
+                }))
+              }
+              placeholder=""
+              data-test-id="userLongitude"
+            />
+            <label htmlFor="userLongitude" className="form-label">
+              Longitude
+            </label>
+          </div>
           {errors.userLongitude && (
             <div
               id="userLongitude-error"

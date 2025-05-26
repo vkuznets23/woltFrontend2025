@@ -1,0 +1,10 @@
+.form-group input.error {
+  border-color: #e77575;
+  border-width: 2px;
+}
+
+.text-danger {
+  color: #e77575;
+  font-size: 14px;
+  margin-top: 4px;
+}

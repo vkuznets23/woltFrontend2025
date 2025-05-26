@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { VenueSlug } from '../types/formInput'
 import type { ValidationErrors } from '../types/validation'
+import { HiOutlineLocationMarker } from 'react-icons/hi'
 
 interface VenueSlugdropdownProps {
   venue: string
@@ -57,13 +58,20 @@ const VenueSlugDropdown = ({
         Venue Slug
       </label>
       {showDropdown && (
-        <div>
+        <div className="dropdown-container">
           {filteredOptions.map((v) => (
-            <div key={v} onClick={() => handleSelect(v)}>
+            <div
+              key={v}
+              className="dropdown-option"
+              onClick={() => handleSelect(v)}
+            >
+              <HiOutlineLocationMarker size={20} className="location-icon" />
               {v}
             </div>
           ))}
-          {filteredOptions.length === 0 && <div>no match</div>}
+          {filteredOptions.length === 0 && (
+            <div className="dropdown-option no-match">No match</div>
+          )}
         </div>
       )}
       {errors.venueSlug && (

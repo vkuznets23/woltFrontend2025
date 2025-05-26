@@ -36,6 +36,11 @@
   border-width: 3px;
 }
 
+.input-label-wrapper {
+  position: relative;
+  height: 50px;
+}
+
 .form-group label {
   position: absolute;
   top: 50%;
