@@ -1,13 +1,9 @@
 import { useEffect, useState } from 'react'
-import type { FormInput } from './types/formInput'
-import type { PriceBreakdown } from './types/priceBreakdown'
-import type { VenueData } from './types/venueData'
-import type { ValidationErrors } from './types/validation'
+import type { FormInput, PriceBreakdown, VenueData, AllErrors } from './types'
 import { fetchDynamicVenue, fetchStaticVenue } from './services/fetchVenueData'
 import { validateRequest } from './utils/formValidation'
 import { calculatePriceBreakdown } from './utils/priceBreakdown'
-import PriceBreakdownDisplay from './components/PriceBreackdown'
-import Form from './components/Form'
+import { PriceBreakdownDisplay, Form } from './components'
 
 const INITIAL_FORMINPUT: FormInput = {
   venueSlug: '',
@@ -29,39 +25,53 @@ function App() {
   const [priceBreakdown, setPriceBreakdown] =
     useState<PriceBreakdown>(INITIAL_BREAKDOWN)
   const [venueData, setVenueData] = useState<VenueData | null>(null)
-  const [errors, setErrors] = useState<ValidationErrors>({})
+  // const [loadVenueError, setLoadVenueError] = useState<string | null>(null)
 
-  const loadVenueData = async (venueSlug: string) => {
-    try {
-      const [staticData, dynamicData] = await Promise.all([
-        fetchStaticVenue(venueSlug),
-        fetchDynamicVenue(venueSlug),
-      ])
-      const [venueLongitude, venueLatitude] =
-        staticData.venue_raw.location.coordinates
-      const orderMinimum =
-        dynamicData.venue_raw.delivery_specs.order_minimum_no_surcharge
-      const basePrice =
-        dynamicData.venue_raw.delivery_specs.delivery_pricing.base_price
-      const distanceRanges =
-        dynamicData.venue_raw.delivery_specs.delivery_pricing.distance_ranges
-
-      setVenueData({
-        latitude: venueLatitude,
-        longitude: venueLongitude,
-        orderMinimum,
-        basePrice,
-        distanceRanges,
-      })
-    } catch (err) {
-      console.error('Failed to load venue data:', err)
-    }
-  }
+  const [errors, setErrors] = useState<AllErrors>({})
 
   useEffect(() => {
-    if (formInput.venueSlug) {
-      loadVenueData(formInput.venueSlug)
+    if (formInput.venueSlug.trim() === '') {
+      setVenueData(null)
+      return
     }
+
+    const loadVenueData = async () => {
+      try {
+        const [staticData, dynamicData] = await Promise.all([
+          fetchStaticVenue(formInput.venueSlug),
+          fetchDynamicVenue(formInput.venueSlug),
+        ])
+        const [venueLongitude, venueLatitude] =
+          staticData.venue_raw.location.coordinates
+        const orderMinimum =
+          dynamicData.venue_raw.delivery_specs.order_minimum_no_surcharge
+        const basePrice =
+          dynamicData.venue_raw.delivery_specs.delivery_pricing.base_price
+        const distanceRanges =
+          dynamicData.venue_raw.delivery_specs.delivery_pricing.distance_ranges
+
+        setVenueData({
+          latitude: venueLatitude,
+          longitude: venueLongitude,
+          orderMinimum,
+          basePrice,
+          distanceRanges,
+        })
+        setErrors((prev) => ({
+          ...prev,
+          loadVenueError: undefined,
+        }))
+      } catch (err) {
+        console.error('Failed to load venue data:', err)
+        setVenueData(null)
+        setErrors((prev) => ({
+          ...prev,
+          loadVenueError: 'Failed to load venue data. Please try again later.',
+        }))
+      }
+    }
+
+    loadVenueData()
   }, [formInput.venueSlug])
 
   const handleGetLocation = () => {
@@ -76,23 +86,41 @@ function App() {
             userLatitude: latitude,
             userLongitude: longitude,
           }))
+          setErrors((prev) => ({
+            ...prev,
+            userLatitude: undefined,
+            userLongitude: undefined,
+            geolocationError: undefined,
+          }))
         },
         (error) => {
-          console.log('Error occurred: ' + error.message)
+          console.log('Failed to get location. ' + error.message)
+          if (
+            !formInput.userLatitude.trim() &&
+            !formInput.userLongitude.trim()
+          ) {
+            setErrors((prev) => ({
+              ...prev,
+              geolocationError: 'Failed to get location. ' + error.message,
+              userLatitude: undefined,
+              userLongitude: undefined,
+            }))
+          }
         }
       )
     } else {
       console.log('Geolocation is not supported by this browser.')
+      if (!formInput.userLatitude.trim() && !formInput.userLongitude.trim()) {
+        setErrors((prev) => ({
+          ...prev,
+          geolocationError: 'Geolocation is not supported by this browser.',
+        }))
+      }
     }
   }
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-
-    if (!venueData) {
-      setErrors({ venueSlug: 'Venue data not loaded yet' })
-      return
-    }
 
     const validationResult = validateRequest({
       venueSlug: formInput.venueSlug,
@@ -115,6 +143,13 @@ function App() {
       return
     }
 
+    console.log('venue data', venueData)
+    if (!venueData) {
+      return
+    }
+
+    setErrors({})
+
     const breakdown = calculatePriceBreakdown({
       cartValue: validationResult.data.cartValue,
       userLatitude: validationResult.data.latitude,
@@ -127,8 +162,14 @@ function App() {
     })
 
     setPriceBreakdown(breakdown)
-    setErrors({})
   }
+
+  const isFormValid =
+    venueData !== null &&
+    formInput.venueSlug.trim() !== '' &&
+    formInput.cartValue.trim() !== '' &&
+    formInput.userLatitude.trim() !== '' &&
+    formInput.userLongitude.trim() !== ''
 
   return (
     <div className="app-container">
@@ -139,6 +180,7 @@ function App() {
         errors={errors}
         handleGetLocation={handleGetLocation}
         handleFormSubmit={handleFormSubmit}
+        isSubmitDisabled={!isFormValid}
       />
       <PriceBreakdownDisplay
         cartValue={priceBreakdown.cartValue}

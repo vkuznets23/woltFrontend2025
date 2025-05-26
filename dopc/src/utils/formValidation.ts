@@ -2,7 +2,7 @@ import { VenueSlug } from '../types/formInput'
 import type {
   RequestInput,
   ValidationErrors,
-  ValidationOutpu,
+  ValidationOutput,
   ValidationResult,
   VenueSLugValidationResult,
 } from '../types/validation'
@@ -103,7 +103,7 @@ export const validateCoordinate = (
   }
 }
 
-export function validateRequest(input: RequestInput): ValidationOutpu {
+export function validateRequest(input: RequestInput): ValidationOutput {
   const venueValidation = validateVenueSlug(input.venueSlug)
   const cartValidation = cartValueValidation(input.cartValue)
   const latValidation = validateCoordinate(

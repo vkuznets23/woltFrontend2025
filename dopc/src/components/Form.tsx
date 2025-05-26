@@ -1,13 +1,14 @@
 import type { FormInput } from '../types/formInput'
-import type { ValidationErrors } from '../types/validation'
+import type { AllErrors } from '../types/validation'
 import VenueSlugDropdown from './venueSlugField'
 
 interface FormInputProps {
   formInput: FormInput
-  errors: ValidationErrors
+  errors: AllErrors
   handleGetLocation: () => void
   handleFormSubmit: (e: React.FormEvent) => void
   setFormInput: React.Dispatch<React.SetStateAction<FormInput>>
+  isSubmitDisabled: boolean
 }
 
 const Form = ({
@@ -16,6 +17,7 @@ const Form = ({
   handleFormSubmit,
   errors,
   handleGetLocation,
+  isSubmitDisabled,
 }: FormInputProps) => {
   return (
     <form onSubmit={handleFormSubmit} data-test-id="form">
@@ -26,6 +28,26 @@ const Form = ({
         }
         errors={errors}
       />
+      {errors.loadVenueError && (
+        <div
+          id="loadVenue-error"
+          role="alert"
+          aria-live="assertive"
+          className="text-danger"
+        >
+          {errors.loadVenueError}
+        </div>
+      )}
+      {errors.venueSlug && (
+        <div
+          id="venueSlug-error"
+          className="text-danger"
+          role="alert"
+          aria-live="assertive"
+        >
+          {errors.venueSlug}
+        </div>
+      )}
       <div className="form-group form-group-big">
         <div className="input-label-wrapper">
           <input
@@ -64,10 +86,14 @@ const Form = ({
               id="userLatitude"
               inputMode="decimal"
               type="text"
-              className={errors.userLatitude ? 'error' : ''}
-              aria-invalid={!!errors.userLatitude}
+              className={
+                errors.userLatitude || errors.geolocationError ? 'error' : ''
+              }
+              aria-invalid={!!(errors.userLatitude || errors.geolocationError)}
               aria-describedby={
-                errors.userLatitude ? 'userLatitude-error' : undefined
+                errors.userLatitude || errors.geolocationError
+                  ? 'userLatitude-error'
+                  : undefined
               }
               value={formInput.userLatitude}
               onChange={(e) =>
@@ -100,10 +126,14 @@ const Form = ({
               id="userLongitude"
               inputMode="decimal"
               type="text"
-              className={errors.userLongitude ? 'error' : ''}
-              aria-invalid={!!errors.userLongitude}
+              className={
+                errors.userLongitude || errors.geolocationError ? 'error' : ''
+              }
+              aria-invalid={!!(errors.userLongitude || errors.geolocationError)}
               aria-describedby={
-                errors.userLongitude ? 'userLongitude-error' : undefined
+                errors.userLongitude || errors.geolocationError
+                  ? 'userLongitude-error'
+                  : undefined
               }
               value={formInput.userLongitude}
               onChange={(e) =>
@@ -130,6 +160,7 @@ const Form = ({
             </div>
           )}
         </div>
+
         <button
           type="button"
           className="btn btn-outline-secondary"
@@ -139,9 +170,20 @@ const Form = ({
           Get location
         </button>
       </div>
+      {errors.geolocationError && (
+        <div
+          id="geolocation-error"
+          role="alert"
+          aria-live="assertive"
+          className="text-danger"
+        >
+          {errors.geolocationError}
+        </div>
+      )}
       <div>
         <button
           type="submit"
+          disabled={isSubmitDisabled}
           data-test-id="submitButton"
           className="btn btn-primary"
         >

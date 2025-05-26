@@ -22,7 +22,12 @@ export type ValidationErrors = {
   userLongitude?: string
 }
 
-export type ValidationOutpu =
+export type AllErrors = ValidationErrors & {
+  geolocationError?: string
+  loadVenueError?: string
+}
+
+export type ValidationOutput =
   | {
       success: true
       data: {
@@ -32,4 +37,4 @@ export type ValidationOutpu =
         longitude: number
       }
     }
-  | { success: false; errors: ValidationErrors }
+  | { success: false; errors: AllErrors }
