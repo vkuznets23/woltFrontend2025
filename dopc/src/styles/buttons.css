@@ -40,7 +40,6 @@
 
 .btn:disabled {
   color: var(--color-text-disabled);
+  position: relative;
   cursor: not-allowed;
-  opacity: 0.6;
-  pointer-events: none;
 }

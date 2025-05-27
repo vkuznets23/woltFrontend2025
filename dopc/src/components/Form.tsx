@@ -6,7 +6,7 @@ interface FormInputProps {
   formInput: FormInput
   errors: AllErrors
   handleGetLocation: () => void
-  handleFormSubmit: (e: React.FormEvent) => void
+  handleFormSubmit: (e: React.FormEvent<HTMLFormElement>) => void
   setFormInput: React.Dispatch<React.SetStateAction<FormInput>>
   isSubmitDisabled: boolean
 }

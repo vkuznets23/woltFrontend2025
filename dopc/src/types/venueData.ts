@@ -27,8 +27,8 @@ export interface DynamicVenueResponse {
 }
 
 export interface VenueData {
-  latitude: number
-  longitude: number
+  venueLatitude: number
+  venueLongitude: number
   orderMinimum: number
   basePrice: number
   distanceRanges: DistanceRange[]

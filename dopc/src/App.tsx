@@ -25,11 +25,10 @@ function App() {
   const [priceBreakdown, setPriceBreakdown] =
     useState<PriceBreakdown>(INITIAL_BREAKDOWN)
   const [venueData, setVenueData] = useState<VenueData | null>(null)
-
   const [errors, setErrors] = useState<AllErrors>({})
 
   useEffect(() => {
-    if (formInput.venueSlug.trim() === '') {
+    if (!formInput.venueSlug) {
       setVenueData(null)
       return
     }
@@ -50,12 +49,13 @@ function App() {
           dynamicData.venue_raw.delivery_specs.delivery_pricing.distance_ranges
 
         setVenueData({
-          latitude: venueLatitude,
-          longitude: venueLongitude,
+          venueLatitude,
+          venueLongitude,
           orderMinimum,
           basePrice,
           distanceRanges,
         })
+
         setErrors((prev) => ({
           ...prev,
           loadVenueError: undefined,
@@ -112,13 +112,15 @@ function App() {
       if (!formInput.userLatitude.trim() && !formInput.userLongitude.trim()) {
         setErrors((prev) => ({
           ...prev,
+          userLatitude: undefined,
+          userLongitude: undefined,
           geolocationError: 'Geolocation is not supported by this browser.',
         }))
       }
     }
   }
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     const validationResult = validateRequest({
@@ -127,8 +129,6 @@ function App() {
       userLatitude: formInput.userLatitude,
       userLongitude: formInput.userLongitude,
     })
-
-    console.log(validationResult)
 
     if (!validationResult.success) {
       setErrors(validationResult.errors)
@@ -142,7 +142,6 @@ function App() {
       return
     }
 
-    console.log('venue data', venueData)
     if (!venueData) {
       return
     }
@@ -153,8 +152,8 @@ function App() {
       cartValue: validationResult.data.cartValue,
       userLatitude: validationResult.data.latitude,
       userLongitude: validationResult.data.longitude,
-      venueLatitude: venueData.latitude,
-      venueLongitude: venueData.longitude,
+      venueLatitude: venueData.venueLatitude,
+      venueLongitude: venueData.venueLongitude,
       orderMinimum: venueData.orderMinimum,
       basePrice: venueData.basePrice,
       distanceRanges: venueData.distanceRanges,
