@@ -1,5 +1,5 @@
 import type { FormInput, AllErrors } from '../types'
-import VenueSlugDropdown from './venueSlugField'
+import VenueSlugDropdown from './VenueSlugField'
 import { RiFocus3Line } from 'react-icons/ri'
 
 interface FormInputProps {

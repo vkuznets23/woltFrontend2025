@@ -73,6 +73,35 @@ body {
   padding: 0;
 }
 
+@media (max-width: 600px) {
+  h1 {
+    font-size: 32px;
+    line-height: 1.2;
+  }
+  h2 {
+    font-size: 22px;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 0px;
+  }
+
+  .form-group-small {
+    width: 100%;
+  }
+
+  .btn-outline-secondary {
+    width: 100%;
+  }
+}
+
+@media (max-width: 710px) {
+  .app-container {
+    padding: 20px;
+  }
+}
+
 /* =========================================
    Layout
 ========================================= */
