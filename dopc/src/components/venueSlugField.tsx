@@ -20,32 +20,14 @@ const VenueSlugDropdown = ({
   const dropdownRef = useRef<HTMLDivElement>(null)
   const venues = Object.values(VenueSlug)
 
-  useEffect(() => {
-    setSearch(venue)
-    setSelectedVenue(venue)
-  }, [venue])
-
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(e.target as Node)
-      ) {
-        setShowDropdown(false)
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
-
   const filteredOptions = venues.filter((venue) =>
     venue.toLowerCase().includes(search.toLowerCase())
   )
 
   const handleSelect = (venue: VenueSlug) => {
     setSelectedVenue(venue)
-    onChange(venue)
     setSearch(venue)
+    onChange(venue)
     setShowDropdown(false)
   }
 
@@ -67,6 +49,24 @@ const VenueSlugDropdown = ({
     }
     setShowDropdown(false)
   }
+
+  useEffect(() => {
+    setSearch(venue)
+    setSelectedVenue(venue)
+  }, [venue])
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
+        setShowDropdown(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   return (
     <div className="form-group form-group-big" ref={dropdownRef}>
