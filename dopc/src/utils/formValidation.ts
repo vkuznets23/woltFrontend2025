@@ -82,13 +82,6 @@ export const validateCoordinate = (
     }
   }
 
-  if (!/^[-]?\d+\.\d{5}$/.test(str)) {
-    return {
-      success: false,
-      error: `${type} must have exactly 5 digits after the decimal point`,
-    }
-  }
-
   const num = Number(str)
   if (num < min || num > max) {
     return {
@@ -97,9 +90,11 @@ export const validateCoordinate = (
     }
   }
 
+  const truncatedNum = Math.trunc(num * 1e5) / 1e5
+
   return {
     success: true,
-    value: num,
+    value: truncatedNum,
   }
 }
 

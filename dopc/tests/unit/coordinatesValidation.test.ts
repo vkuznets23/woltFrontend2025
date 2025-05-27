@@ -34,43 +34,6 @@ describe('latitude field validation', () => {
         throw new Error('Expected failure, but got success')
       }
     })
-
-    it('returns error when latitude has wrong decimal precision (0 instead of 5)', () => {
-      const result = validateCoordinate('60.', 'latitude', -90, 90)
-      expect(result.success).toBe(false)
-
-      if (!result.success) {
-        expect(result.error).toBe('latitude must be a valid number')
-      } else {
-        throw new Error('Expected failure, but got success')
-      }
-    })
-
-    it('returns error when latitude has wrong decimal precision (4 instead of 5)', () => {
-      const result = validateCoordinate('60.1234', 'latitude', -90, 90)
-      expect(result.success).toBe(false)
-
-      if (!result.success) {
-        expect(result.error).toBe(
-          'latitude must have exactly 5 digits after the decimal point'
-        )
-      } else {
-        throw new Error('Expected failure, but got success')
-      }
-    })
-
-    it('returns error when latitude has wrong decimal precision (10 instead of 5)', () => {
-      const result = validateCoordinate('60.0123456789', 'latitude', -90, 90)
-      expect(result.success).toBe(false)
-
-      if (!result.success) {
-        expect(result.error).toBe(
-          'latitude must have exactly 5 digits after the decimal point'
-        )
-      } else {
-        throw new Error('Expected failure, but got success')
-      }
-    })
   })
 
   describe('coordinate is a wrong value', () => {

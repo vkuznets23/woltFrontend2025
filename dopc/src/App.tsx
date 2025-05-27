@@ -130,6 +130,8 @@ function App() {
       userLongitude: formInput.userLongitude,
     })
 
+    console.log(validationResult)
+
     if (!validationResult.success) {
       setErrors(validationResult.errors)
 
