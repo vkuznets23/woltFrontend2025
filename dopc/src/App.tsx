@@ -25,7 +25,6 @@ function App() {
   const [priceBreakdown, setPriceBreakdown] =
     useState<PriceBreakdown>(INITIAL_BREAKDOWN)
   const [venueData, setVenueData] = useState<VenueData | null>(null)
-  // const [loadVenueError, setLoadVenueError] = useState<string | null>(null)
 
   const [errors, setErrors] = useState<AllErrors>({})
 

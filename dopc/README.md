@@ -56,6 +56,21 @@ npm run dev
 
 Then open http://localhost:5173
 
+> ### 📝 Using the correct Node.js version
+>
+> To ensure you're using the correct Node.js version, run:
+>
+> ```bash
+> nvm use
+> ```
+>
+> You should see one of the following:
+>
+> - ✅ Now using node v20.18.0 (npm v11.3.0) – correct version is being used
+> - ❌ N/A: version "v20" is not yet installed – run `nvm install` to install it
+>
+> Make sure you have `nvm` installed and sourced properly in your shell.
+
 ## 📍 Example Usage
 
 - Select a venue (default: home-assignment-venue-helsinki)

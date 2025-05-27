@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import { VenueSlug } from '../types/formInput'
-import type { ValidationErrors } from '../types/validation'
+import type { AllErrors } from '../types/validation'
 import { HiOutlineLocationMarker } from 'react-icons/hi'
 
 interface VenueSlugdropdownProps {
   venue: string
   onChange: (value: VenueSlug) => void
-  errors: ValidationErrors
+  errors: AllErrors
 }
 const VenueSlugDropdown = ({
   venue,
@@ -73,15 +73,20 @@ const VenueSlugDropdown = ({
       <input
         id="venueSlug"
         type="text"
-        className={errors.venueSlug ? 'error' : ''}
+        className={errors.venueSlug || errors.loadVenueError ? 'error' : ''}
         value={search}
         onChange={(e) => handleInputChange(e.target.value)}
         onClick={() => setShowDropdown(true)}
         onBlur={handleBlur}
         placeholder=""
         autoComplete="off"
-        aria-invalid={!!errors.venueSlug}
-        aria-describedby={errors.venueSlug ? 'venueSlug-error' : undefined}
+        aria-invalid={!!(errors.venueSlug || errors.loadVenueError)}
+        aria-describedby={
+          errors.venueSlug || errors.loadVenueError
+            ? 'venueSlug-error'
+            : undefined
+        }
+        data-test-id="venueSlug"
       />
       <label htmlFor="venueSlug" className="form-label">
         Venue Slug
