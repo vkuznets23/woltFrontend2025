@@ -1,13 +1,19 @@
 import type { PriceBreakdown } from '../types/priceBreakdown'
 import { formatCurrency } from '../utils/priceBreakdown'
 
+interface PriceBreakdownDisplayProps {
+  priceBreakdown: PriceBreakdown
+}
+
 const PriceBreakdownDisplay = ({
-  cartValue,
-  deliveryFee,
-  deliveryDistance,
-  smallOrderSurcharge,
-  totalPrice,
-}: PriceBreakdown) => {
+  priceBreakdown: {
+    cartValue,
+    deliveryFee,
+    deliveryDistance,
+    smallOrderSurcharge,
+    totalPrice,
+  },
+}: PriceBreakdownDisplayProps) => {
   return (
     <>
       <h2>Price breakdown</h2>

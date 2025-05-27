@@ -180,13 +180,7 @@ function App() {
         handleFormSubmit={handleFormSubmit}
         isSubmitDisabled={!isFormValid}
       />
-      <PriceBreakdownDisplay
-        cartValue={priceBreakdown.cartValue}
-        deliveryFee={priceBreakdown.deliveryFee}
-        deliveryDistance={priceBreakdown.deliveryDistance}
-        smallOrderSurcharge={priceBreakdown.smallOrderSurcharge}
-        totalPrice={priceBreakdown.totalPrice}
-      />
+      <PriceBreakdownDisplay priceBreakdown={priceBreakdown} />
     </div>
   )
 }
