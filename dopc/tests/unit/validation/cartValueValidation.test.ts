@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { cartValueValidation } from '../../src/utils/formValidation'
+import { cartValueValidation } from '../../../src/utils/formValidation'
 
 describe('cartValue field validation', () => {
   describe('cart value is not a number', () => {

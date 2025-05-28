@@ -1,2 +1,2 @@
 export { default as Form } from './Form'
-export { default as PriceBreakdownDisplay } from './PriceBreackdown'
+export { default as PriceBreakdownDisplay } from './PriceBreakdown'

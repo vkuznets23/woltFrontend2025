@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { validateRequest } from '../../src/utils/formValidation'
+import { validateRequest } from '../../../src/utils/formValidation'
 
 describe('valid inputs', () => {
   const baseData = {

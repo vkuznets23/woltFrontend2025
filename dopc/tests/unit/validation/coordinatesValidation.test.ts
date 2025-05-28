@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { validateCoordinate } from '../../src/utils/formValidation'
+import { validateCoordinate } from '../../../src/utils/formValidation'
 
 describe('latitude field validation', () => {
   it('returns success with parsed number for valid latitude', () => {

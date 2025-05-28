@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { validateVenueSlug } from '../../src/utils/formValidation'
+import { validateVenueSlug } from '../../../src/utils/formValidation'
 
 describe('Venue slug validation', () => {
   it('valid venue slug', () => {
