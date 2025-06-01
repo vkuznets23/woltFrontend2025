@@ -36,6 +36,7 @@ const Form = ({
         {errors.loadVenueError && (
           <div
             id="loadVenue-error"
+            data-testid="loadVenueError"
             role="alert"
             aria-live="assertive"
             className="text-danger"
@@ -46,6 +47,7 @@ const Form = ({
         {errors.venueSlug && (
           <div
             id="venueSlug-error"
+            data-testid="venueSlugError"
             className="text-danger"
             role="alert"
             aria-live="assertive"
@@ -78,6 +80,7 @@ const Form = ({
           {errors.cartValue && (
             <div
               id="cartValue-error"
+              data-testid="cartValueError"
               role="alert"
               aria-live="assertive"
               className="text-danger"
@@ -121,6 +124,7 @@ const Form = ({
             {errors.userLatitude && (
               <div
                 id="userLatitude-error"
+                data-testid="userLatitudeError"
                 role="alert"
                 aria-live="assertive"
                 className="text-danger"
@@ -163,6 +167,7 @@ const Form = ({
             {errors.userLongitude && (
               <div
                 id="userLongitude-error"
+                data-testid="userLongitudeError"
                 role="alert"
                 aria-live="assertive"
                 className="text-danger"
@@ -185,6 +190,7 @@ const Form = ({
         {errors.geolocationError && (
           <div
             id="geolocation-error"
+            data-testid="geolocationError"
             role="alert"
             aria-live="assertive"
             className="text-danger"
