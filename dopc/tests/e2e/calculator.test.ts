@@ -37,7 +37,7 @@ test('calculator works correctly', async ({ page }) => {
 
 test('get geolocation button', async ({ page }) => {
   await page.addInitScript(() => {
-    //mocke geolocation
+    //mock geolocation
     window.navigator.geolocation.getCurrentPosition = (success) => {
       success({
         coords: {

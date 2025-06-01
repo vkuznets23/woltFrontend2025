@@ -1,33 +1,39 @@
 import { useEffect, useRef, useState } from 'react'
-import { VenueSlug } from '../types/formInput'
-import type { AllErrors } from '../types/validation'
 import { HiOutlineLocationMarker } from 'react-icons/hi'
 
-interface VenueSlugdropdownProps {
-  venue: string
-  onChange: (value: VenueSlug) => void
-  errors: AllErrors
+interface SearchableDropdownProps {
+  value: string
+  onChange: (value: string) => void
+  options: string[]
+  error?: string
+  inputId: string
+  label: string
+  placeholder: string
 }
-const VenueSlugDropdown = ({
-  venue,
+
+const SearchableDropdown = ({
+  value,
   onChange,
-  errors,
-}: VenueSlugdropdownProps) => {
-  const [search, setSearch] = useState<string>(venue)
+  options,
+  error,
+  inputId,
+  label,
+  placeholder,
+}: SearchableDropdownProps) => {
+  const [search, setSearch] = useState(value)
   const [showDropdown, setShowDropdown] = useState(false)
-  const [selectedVenue, setSelectedVenue] = useState<string>(venue)
+  const [selectedValue, setSelectedValue] = useState(value)
 
   const dropdownRef = useRef<HTMLDivElement>(null)
-  const venues = Object.values(VenueSlug)
 
-  const filteredOptions = venues.filter((venue) =>
-    venue.toLowerCase().includes(search.toLowerCase())
+  const filteredOptions = options.filter((option) =>
+    option.toLowerCase().includes(search.toLowerCase())
   )
 
-  const handleSelect = (venue: VenueSlug) => {
-    setSelectedVenue(venue)
-    setSearch(venue)
-    onChange(venue)
+  const handleSelect = (val: string) => {
+    setSelectedValue(val)
+    setSearch(val)
+    onChange(val)
     setShowDropdown(false)
   }
 
@@ -36,24 +42,20 @@ const VenueSlugDropdown = ({
     setShowDropdown(true)
   }
 
-  const isVenueSlug = (value: string): value is VenueSlug => {
-    return venues.includes(value as VenueSlug)
-  }
-
   const handleBlur = () => {
-    if (isVenueSlug(search)) {
-      setSelectedVenue(search)
-      onChange(search as VenueSlug)
+    if (options.includes(search)) {
+      setSelectedValue(search)
+      onChange(search)
     } else {
-      setSearch(selectedVenue)
+      setSearch(selectedValue)
     }
     setShowDropdown(false)
   }
 
   useEffect(() => {
-    setSearch(venue)
-    setSelectedVenue(venue)
-  }, [venue])
+    setSearch(value)
+    setSelectedValue(value)
+  }, [value])
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -67,29 +69,24 @@ const VenueSlugDropdown = ({
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
-
   return (
     <div className="form-group form-group-big" ref={dropdownRef}>
       <input
-        id="venueSlug"
+        id={inputId}
         type="text"
-        className={errors.venueSlug || errors.loadVenueError ? 'error' : ''}
+        className={error ? 'error' : ''}
         value={search}
         onChange={(e) => handleInputChange(e.target.value)}
         onClick={() => setShowDropdown(true)}
         onBlur={handleBlur}
-        placeholder=""
+        placeholder={placeholder}
         autoComplete="off"
-        aria-invalid={!!(errors.venueSlug || errors.loadVenueError)}
-        aria-describedby={
-          errors.venueSlug || errors.loadVenueError
-            ? 'venueSlug-error'
-            : undefined
-        }
-        data-test-id="venueSlug"
+        aria-invalid={!!error}
+        aria-describedby={error ? `${inputId}-error` : undefined}
+        data-test-id={inputId}
       />
-      <label htmlFor="venueSlug" className="form-label">
-        Venue Slug
+      <label htmlFor={inputId} className="form-label">
+        {label}
       </label>
       {showDropdown && (
         <div className="dropdown-container">
@@ -97,10 +94,7 @@ const VenueSlugDropdown = ({
             <div
               key={v}
               className="dropdown-option"
-              onMouseDown={(e) => {
-                // prevent blur before onClick
-                e.preventDefault()
-              }}
+              onMouseDown={(e) => e.preventDefault()}
               onClick={() => handleSelect(v)}
             >
               <HiOutlineLocationMarker size={20} className="location-icon" />
@@ -116,4 +110,4 @@ const VenueSlugDropdown = ({
   )
 }
 
-export default VenueSlugDropdown
+export default SearchableDropdown

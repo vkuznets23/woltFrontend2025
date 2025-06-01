@@ -1,5 +1,5 @@
-import type { FormInput, AllErrors } from '../types'
-import VenueSlugDropdown from './VenueSlugField'
+import { type FormInput, type AllErrors, VenueSlug } from '../types'
+import SearchableDropdown from './SearchableDropdown'
 import { RiFocus3Line } from 'react-icons/ri'
 
 interface FormInputProps {
@@ -22,12 +22,16 @@ const Form = ({
   return (
     <div className="form">
       <form onSubmit={handleFormSubmit} data-test-id="form">
-        <VenueSlugDropdown
-          venue={formInput.venueSlug}
+        <SearchableDropdown
+          inputId="venueSlug"
+          label="Venue Slug"
+          value={formInput.venueSlug}
           onChange={(newSlug) =>
             setFormInput((prev) => ({ ...prev, venueSlug: newSlug }))
           }
-          errors={errors}
+          options={Object.values(VenueSlug)}
+          placeholder=""
+          error={errors.venueSlug || errors.loadVenueError}
         />
         {errors.loadVenueError && (
           <div

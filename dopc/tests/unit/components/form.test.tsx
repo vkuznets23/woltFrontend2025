@@ -35,7 +35,7 @@ describe('Form component', () => {
     expect(getByDataTestId('submitButton')).toBeInTheDocument()
   })
 
-  it('displays errors when provided', () => {
+  it('displays errors', () => {
     const errors = {
       cartValue: 'Cart value is required',
       userLatitude: 'Latitude is invalid',
@@ -53,6 +53,48 @@ describe('Form component', () => {
     expect(screen.getByText(errors.loadVenueError)).toBeInTheDocument()
     expect(screen.getByText(errors.venueSlug)).toBeInTheDocument()
     expect(screen.getByText(errors.geolocationError)).toBeInTheDocument()
+  })
+
+  it('calls setFormInput with selected venueSlug from dropdown', () => {
+    render(<Form {...baseProps} />)
+    const input = getByDataTestId('venueSlug')
+    if (!input) throw new Error('Element not found')
+    fireEvent.click(input)
+
+    const option = screen.queryByText('home-assignment-venue-helsinki')
+    if (!option) throw new Error('Dropdown option not found')
+    fireEvent.mouseDown(option)
+    fireEvent.click(option)
+
+    expect(mockSetFormInput).toHaveBeenCalledWith(expect.any(Function))
+  })
+
+  it('keeps value on blur if input is valid', () => {
+    render(<Form {...baseProps} />)
+
+    const input = getByDataTestId('venueSlug')
+    if (!input) throw new Error('Element not found')
+    fireEvent.change(input, { target: { value: 'helsinki' } })
+    fireEvent.blur(input)
+
+    expect(mockSetFormInput).toHaveBeenCalled()
+  })
+
+  it('adds aria-describedby only for venueSlug when only that error exists', () => {
+    render(<Form {...baseProps} errors={{ venueSlug: 'Required' }} />)
+    const input = getByDataTestId('venueSlug')
+    expect(input).toHaveAttribute('aria-describedby', 'venueSlug-error')
+  })
+
+  it('renders loadVenueError message correctly', () => {
+    render(
+      <Form
+        {...baseProps}
+        errors={{ loadVenueError: 'Something went wrong' }}
+      />
+    )
+
+    expect(screen.getByText('Something went wrong')).toBeInTheDocument()
   })
 
   it('calls setFormInput on input change', () => {

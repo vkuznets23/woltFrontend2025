@@ -1,65 +1,92 @@
 import React from 'react'
 import { render, fireEvent, screen } from '@testing-library/react'
 import '@testing-library/jest-dom/vitest'
-import VenueSlugDropdown from '../../../src/components/VenueSlugField'
 import { describe, it, expect, vi } from 'vitest'
+import SearchableDropdown from '../../../src/components/SearchableDropdown'
 import { getByDataTestId } from './utils'
-import { VenueSlug } from '../../../src/types'
 
-describe('VenueSlugDropdown', () => {
-  const getBaseProps = () => {
-    return {
-      venue: VenueSlug.Helsinki,
-      onChange: vi.fn(),
-      errors: {},
-    }
-  }
+describe('SearchableDropdown', () => {
+  const OPTIONS = ['Helsinki', 'Turku', 'Oulu', 'Tampere']
 
-  it('renders input and label', () => {
-    render(<VenueSlugDropdown {...getBaseProps()} />)
+  const getBaseProps = () => ({
+    value: 'Helsinki',
+    onChange: vi.fn(),
+    options: OPTIONS,
+    inputId: 'venueSlug',
+    label: 'Venue Slug',
+    placeholder: 'Select a venue',
+  })
 
+  it('renders input and label correctly', () => {
+    render(<SearchableDropdown {...getBaseProps()} />)
     expect(screen.getByLabelText(/venue slug/i)).toBeInTheDocument()
-    const slug = getByDataTestId('venueSlug')
-    if (!slug) throw new Error('unexpected error')
-    expect(slug).toHaveValue(VenueSlug.Helsinki)
+    expect(getByDataTestId('venueSlug')).toHaveValue('Helsinki')
   })
 
   it('opens dropdown on input click', () => {
-    render(<VenueSlugDropdown {...getBaseProps()} />)
-
+    render(<SearchableDropdown {...getBaseProps()} />)
     const input = getByDataTestId('venueSlug')
-    if (!input) throw new Error('unexpected error')
+    if (!input) throw new Error('Error')
+
     fireEvent.click(input)
-    expect(screen.getByText(VenueSlug.Helsinki)).toBeInTheDocument()
+    expect(screen.getByText('Helsinki')).toBeInTheDocument()
   })
 
-  // filtered data
-
-  it('applies error class and accessibility attributes when venueSlug error is present', () => {
-    render(
-      <VenueSlugDropdown
-        venue={VenueSlug.Helsinki}
-        onChange={vi.fn()}
-        errors={{ venueSlug: 'Required' }}
-      />
-    )
-
+  it('filters options based on input value', () => {
+    render(<SearchableDropdown {...getBaseProps()} />)
     const input = getByDataTestId('venueSlug')
-    expect(input).toHaveClass('error')
-    expect(input).toHaveAttribute('aria-invalid', 'true')
-    expect(input).toHaveAttribute('aria-describedby', 'venueSlug-error')
+    if (!input) throw new Error('Error')
+
+    fireEvent.change(input, { target: { value: 'tam' } })
+    expect(screen.getByText('Tampere')).toBeInTheDocument()
+    expect(screen.queryByText('Turku')).not.toBeInTheDocument()
   })
 
-  it('applies error class and accessibility attributes when loadVenueError is present', () => {
-    render(
-      <VenueSlugDropdown
-        venue={VenueSlug.Helsinki}
-        onChange={vi.fn()}
-        errors={{ loadVenueError: 'Could not load venues' }}
-      />
-    )
-
+  it('selects option from dropdown and calls onChange', () => {
+    const onChange = vi.fn()
+    render(<SearchableDropdown {...getBaseProps()} onChange={onChange} />)
     const input = getByDataTestId('venueSlug')
+    if (!input) throw new Error('Error')
+
+    fireEvent.change(input, { target: { value: 'ou' } })
+    fireEvent.click(screen.getByText('Oulu'))
+    expect(input).toHaveValue('Oulu')
+    expect(onChange).toHaveBeenCalledWith('Oulu')
+  })
+
+  it('on blur keeps valid input and triggers onChange', () => {
+    const onChange = vi.fn()
+    render(<SearchableDropdown {...getBaseProps()} onChange={onChange} />)
+    const input = getByDataTestId('venueSlug')
+    if (!input) throw new Error('Error')
+
+    fireEvent.change(input, { target: { value: 'Turku' } })
+    fireEvent.blur(input)
+    expect(input).toHaveValue('Turku')
+    expect(onChange).toHaveBeenCalledWith('Turku')
+  })
+
+  it('on blur reverts invalid input', () => {
+    render(<SearchableDropdown {...getBaseProps()} />)
+    const input = getByDataTestId('venueSlug')
+    if (!input) throw new Error('Error')
+
+    fireEvent.change(input, { target: { value: 'invalid' } })
+    fireEvent.blur(input)
+    expect(input).toHaveValue('Helsinki')
+  })
+
+  it('updates input when prop value changes', () => {
+    const { rerender } = render(<SearchableDropdown {...getBaseProps()} />)
+    rerender(<SearchableDropdown {...getBaseProps()} value="Turku" />)
+    expect(getByDataTestId('venueSlug')).toHaveValue('Turku')
+  })
+
+  it('applies error styles and aria attributes', () => {
+    render(<SearchableDropdown {...getBaseProps()} error="Field is required" />)
+    const input = getByDataTestId('venueSlug')
+    if (!input) throw new Error('Error')
+
     expect(input).toHaveClass('error')
     expect(input).toHaveAttribute('aria-invalid', 'true')
     expect(input).toHaveAttribute('aria-describedby', 'venueSlug-error')
@@ -68,24 +95,18 @@ describe('VenueSlugDropdown', () => {
   it('closes dropdown when clicking outside', () => {
     render(
       <div>
-        <VenueSlugDropdown {...getBaseProps()} />
-        <button data-testid="outside">Outside</button>
+        <SearchableDropdown {...getBaseProps()} />
+        <button data-testid="outside">Click Outside</button>
       </div>
     )
 
     const input = getByDataTestId('venueSlug')
-    if (!input) throw new Error('unexpected error')
+    if (!input) throw new Error('Error')
 
     fireEvent.click(input)
-    expect(screen.getByText(VenueSlug.Helsinki)).toBeInTheDocument()
+    expect(screen.getByText('Helsinki')).toBeInTheDocument()
 
     fireEvent.mouseDown(screen.getByTestId('outside'))
-    expect(screen.queryByText(VenueSlug.Helsinki)).not.toBeInTheDocument()
+    expect(screen.queryByText('Helsinki')).not.toBeInTheDocument()
   })
 })
-
-// i need to mock more values to test
-// Фильтрация
-// Выбор из списка
-// Blur (валидное и невалидное)
-// Обновление по props.venue
