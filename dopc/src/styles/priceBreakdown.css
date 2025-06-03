@@ -19,6 +19,10 @@
   vertical-align: middle;
   font-size: var(--font-size-base);
   color: var(--color-text-primary);
+  max-width: 150px;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .price-breakdown-container td:first-child {

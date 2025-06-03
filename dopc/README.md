@@ -38,6 +38,10 @@ tests/
 You can run unit or integration tests using:
 
 ```bash
+npm run test
+```
+
+```bash
 npm run test:unit
 ```
 

@@ -19,6 +19,14 @@ const Form = ({
   handleGetLocation,
   isSubmitDisabled,
 }: FormInputProps) => {
+  const formatSlug = (slug: string) =>
+    slug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
+
+  const venueOptions = Object.values(VenueSlug).map((slug) => ({
+    label: formatSlug(slug),
+    value: slug,
+  }))
+
   return (
     <div className="form">
       <form onSubmit={handleFormSubmit} data-test-id="form">
@@ -29,7 +37,7 @@ const Form = ({
           onChange={(newSlug) =>
             setFormInput((prev) => ({ ...prev, venueSlug: newSlug }))
           }
-          options={Object.values(VenueSlug)}
+          options={venueOptions}
           placeholder=""
           error={errors.venueSlug || errors.loadVenueError}
         />

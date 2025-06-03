@@ -12,7 +12,7 @@ test('calculator works correctly', async ({ page }) => {
 
   await expect(page.getByTestId('venueSlug')).toBeVisible()
   await page.getByTestId('venueSlug').click()
-  await page.getByText('Home-assignment-venue-helsinki').click()
+  await page.getByText('Home Assignment Venue Helsinki').click()
 
   await Promise.all([
     page.waitForResponse(`${baseUrl}/static`),

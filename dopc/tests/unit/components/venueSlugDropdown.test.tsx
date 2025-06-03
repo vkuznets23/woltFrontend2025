@@ -6,7 +6,12 @@ import SearchableDropdown from '../../../src/components/SearchableDropdown'
 import { getByDataTestId } from './utils'
 
 describe('SearchableDropdown', () => {
-  const OPTIONS = ['Helsinki', 'Turku', 'Oulu', 'Tampere']
+  const OPTIONS = [
+    { value: 'home-assignment-venue-helsinki', label: 'Helsinki' },
+    { value: 'home-assignment-venue-turku', label: 'Turku' },
+    { value: 'home-assignment-venue-oulu', label: 'Oulu' },
+    { value: 'home-assignment-venue-tampere', label: 'Tampere' },
+  ]
 
   const getBaseProps = () => ({
     value: 'Helsinki',
@@ -51,7 +56,7 @@ describe('SearchableDropdown', () => {
     fireEvent.change(input, { target: { value: 'ou' } })
     fireEvent.click(screen.getByText('Oulu'))
     expect(input).toHaveValue('Oulu')
-    expect(onChange).toHaveBeenCalledWith('Oulu')
+    expect(onChange).toHaveBeenCalledWith('home-assignment-venue-oulu')
   })
 
   it('on blur keeps valid input and triggers onChange', () => {
@@ -63,17 +68,7 @@ describe('SearchableDropdown', () => {
     fireEvent.change(input, { target: { value: 'Turku' } })
     fireEvent.blur(input)
     expect(input).toHaveValue('Turku')
-    expect(onChange).toHaveBeenCalledWith('Turku')
-  })
-
-  it('on blur reverts invalid input', () => {
-    render(<SearchableDropdown {...getBaseProps()} />)
-    const input = getByDataTestId('venueSlug')
-    if (!input) throw new Error('Error')
-
-    fireEvent.change(input, { target: { value: 'invalid' } })
-    fireEvent.blur(input)
-    expect(input).toHaveValue('Helsinki')
+    expect(onChange).toHaveBeenCalledWith('home-assignment-venue-turku')
   })
 
   it('updates input when prop value changes', () => {

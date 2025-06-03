@@ -11,6 +11,7 @@
   margin-top: 4px;
   max-height: 200px;
   overflow-y: auto;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .dropdown-option {
@@ -32,9 +33,12 @@ input {
   border-bottom: none;
 }
 
+.dropdown-option.highlighted .location-icon,
 .dropdown-option:hover .location-icon {
   color: var(--color-text-primary); /* #202125 */
 }
+
+.dropdown-option.highlighted,
 .dropdown-option:hover {
   color: var(--color-text-secondary); /* #439cdb */
 }
@@ -50,4 +54,5 @@ input {
   border-radius: 50%;
   padding: 1%;
   margin-right: 10px;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }

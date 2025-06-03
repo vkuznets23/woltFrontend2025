@@ -61,7 +61,7 @@ describe('Form component', () => {
     if (!input) throw new Error('Element not found')
     fireEvent.click(input)
 
-    const option = screen.queryByText('home-assignment-venue-helsinki')
+    const option = screen.queryByText('Home Assignment Venue Helsinki')
     if (!option) throw new Error('Dropdown option not found')
     fireEvent.mouseDown(option)
     fireEvent.click(option)
