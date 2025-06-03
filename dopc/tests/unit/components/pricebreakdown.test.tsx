@@ -1,10 +1,16 @@
 import React from 'react'
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { render } from '@testing-library/react'
 import { PriceBreakdown } from '../../../src/types/priceBreakdown'
 import PriceBreakdownDisplay from '../../../src/components/PriceBreakdown'
 import '@testing-library/jest-dom'
 import { getByDataTestId, getRowByTestId } from './utils'
+import { AllErrors } from '../../../src/types'
+
+vi.mock('lottie-react', () => ({
+  __esModule: true,
+  default: () => <div data-testid="lottie-mock" />,
+}))
 
 describe('PriceBreakdownDisplay', () => {
   const mockData: PriceBreakdown = {
@@ -15,8 +21,18 @@ describe('PriceBreakdownDisplay', () => {
     totalPrice: 1100,
   }
 
+  const errors: AllErrors = {
+    venueSlug: '',
+    cartValue: '',
+    userLatitude: '',
+    userLongitude: '',
+    geolocationError: '',
+    loadVenueError: '',
+    distanceOutOfRange: '',
+  }
+
   it('renders formatted price breakdown values', () => {
-    render(<PriceBreakdownDisplay priceBreakdown={mockData} />)
+    render(<PriceBreakdownDisplay priceBreakdown={mockData} errors={errors} />)
 
     //cartValue
     expect(getByDataTestId('cartValueLabel')).toHaveTextContent('Cart value')

@@ -88,6 +88,7 @@ export const calculatePriceBreakdown = ({
   const surcharge = smallOrderSurcharge(orderMinimum, cartValue)
 
   const deliveryFee = calculateDeliveryFee(distance, basePrice, distanceRanges)
+
   const totalPrice = cartValue + surcharge + deliveryFee
   return {
     cartValue,

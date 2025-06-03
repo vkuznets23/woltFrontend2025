@@ -25,6 +25,7 @@ export type ValidationErrors = {
 export type AllErrors = ValidationErrors & {
   geolocationError?: string
   loadVenueError?: string
+  distanceOutOfRange?: string
 }
 
 export type ValidationOutput =

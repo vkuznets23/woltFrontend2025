@@ -150,18 +150,26 @@ function App() {
 
     setErrors({})
 
-    const breakdown = calculatePriceBreakdown({
-      cartValue: validationResult.data.cartValue,
-      userLatitude: validationResult.data.latitude,
-      userLongitude: validationResult.data.longitude,
-      venueLatitude: venueData.venueLatitude,
-      venueLongitude: venueData.venueLongitude,
-      orderMinimum: venueData.orderMinimum,
-      basePrice: venueData.basePrice,
-      distanceRanges: venueData.distanceRanges,
-    })
-
-    setPriceBreakdown(breakdown)
+    try {
+      const breakdown = calculatePriceBreakdown({
+        cartValue: validationResult.data.cartValue,
+        userLatitude: validationResult.data.latitude,
+        userLongitude: validationResult.data.longitude,
+        venueLatitude: venueData.venueLatitude,
+        venueLongitude: venueData.venueLongitude,
+        orderMinimum: venueData.orderMinimum,
+        basePrice: venueData.basePrice,
+        distanceRanges: venueData.distanceRanges,
+      })
+      setPriceBreakdown(breakdown)
+      setErrors({})
+    } catch {
+      setPriceBreakdown(INITIAL_BREAKDOWN)
+      setErrors((prev) => ({
+        ...prev,
+        distanceOutOfRange: "Oops! Delivery isn't available for this distance",
+      }))
+    }
   }
 
   const isFormValid =
@@ -182,7 +190,7 @@ function App() {
         handleFormSubmit={handleFormSubmit}
         isSubmitDisabled={!isFormValid}
       />
-      <PriceBreakdownDisplay priceBreakdown={priceBreakdown} />
+      <PriceBreakdownDisplay priceBreakdown={priceBreakdown} errors={errors} />
     </div>
   )
 }
