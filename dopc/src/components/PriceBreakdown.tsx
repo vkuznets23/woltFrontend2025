@@ -2,7 +2,7 @@ import type { AllErrors } from '../types'
 import type { PriceBreakdown } from '../types/priceBreakdown'
 import { formatCurrency } from '../utils/priceBreakdown'
 import Lottie from 'lottie-react'
-import areaMapAnimation from '/assets/area-map.json?url'
+import areaMapAnimation from '../../public/assets/area-map.json'
 
 interface PriceBreakdownDisplayProps {
   priceBreakdown: PriceBreakdown

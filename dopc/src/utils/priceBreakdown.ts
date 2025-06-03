@@ -42,6 +42,12 @@ export const calculateDeliveryFee = (
   if (basePrice === undefined || distanceRanges === undefined) return 0
   const sortedRanges = [...distanceRanges].sort((a, b) => a.min - b.min) // just in case mb
 
+  const lastRange = sortedRanges[sortedRanges.length - 1]
+
+  if (lastRange.max === 0 && distance >= lastRange.min) {
+    throw new Error('Delivery not available at this distance.')
+  }
+
   const range = sortedRanges.find((r) => {
     if (r.max === 0) {
       return distance >= r.min
