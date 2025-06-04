@@ -2,7 +2,7 @@ import type { AllErrors } from '../types'
 import type { PriceBreakdown } from '../types/priceBreakdown'
 import { formatCurrency } from '../utils/priceBreakdown'
 import Lottie from 'lottie-react'
-import areaMapAnimation from '../../public/assets/area-map.json'
+import areaMapAnimation from '../assets/area-map.json'
 
 interface PriceBreakdownDisplayProps {
   priceBreakdown: PriceBreakdown
@@ -21,9 +21,11 @@ const PriceBreakdownDisplay = ({
 }: PriceBreakdownDisplayProps) => {
   if (errors.distanceOutOfRange)
     return (
-      <div className="error-container">
-        <h2 className="error-text">{errors.distanceOutOfRange}</h2>
-        <div className="error-animation">
+      <div className="error-container" data-test-id="distanceError">
+        <h2 className="error-text" data-test-id="distanceErrorText">
+          {errors.distanceOutOfRange}
+        </h2>
+        <div className="error-animation" data-test-id="distanceErrorAnimation">
           <Lottie animationData={areaMapAnimation} loop={true} />
         </div>
       </div>

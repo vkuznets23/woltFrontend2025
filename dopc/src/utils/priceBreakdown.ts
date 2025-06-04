@@ -90,6 +90,7 @@ export const calculatePriceBreakdown = ({
     venueLatitude,
     venueLongitude
   )
+  console.log('distance', distance)
 
   const surcharge = smallOrderSurcharge(orderMinimum, cartValue)
 

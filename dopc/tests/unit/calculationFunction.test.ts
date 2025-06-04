@@ -57,10 +57,10 @@ describe('calculation function', () => {
       expect(calculateDeliveryFee(3000, 100, distanceRanges)).toBe(500)
     })
 
-    it('calculates correct fee in open-ended range', () => {
-      // distance 6000 in last range
-      // basePrice 100 + 200 + (0.5*6000)/10 = 100 + 200 + 300 = 600
-      expect(calculateDeliveryFee(6000, 100, distanceRanges)).toBe(600)
+    it('throws error for distance in open-ended range', () => {
+      expect(() => calculateDeliveryFee(6000, 100, distanceRanges)).toThrow(
+        'Delivery not available at this distance.'
+      )
     })
     it('throws error if no range matches', () => {
       const ranges = [{ min: 0, max: 1000, a: 50, b: 2, flag: null }]

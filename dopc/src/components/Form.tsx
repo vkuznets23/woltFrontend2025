@@ -198,7 +198,7 @@ const Form = ({
         {errors.geolocationError && (
           <div
             id="geolocation-error"
-            data-testid="geolocationError"
+            data-test-id="geolocationError"
             role="alert"
             aria-live="assertive"
             className="text-danger"
